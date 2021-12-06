@@ -1,0 +1,201 @@
+<center>
+    <section class="col-sm-12 col-lg-12 col-md-12 ml-5 mt-5">
+        {{!-- <form action="" style="width: 70%;" method="POST" action="/admin/add-product"
+            enctype="multipart/form-data"> --}}
+
+
+            <a class="btn btn-success" data-toggle="modal" data-target="#addcoupon">Add Offer</a>
+
+
+            {{!-- Modal For adding offer --}}
+            <div class="modal fade" id="addcoupon" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Add Offer</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-12">
+
+
+                                <form action="/admin/addprooffer" method="post" id="productOfferform">
+
+                                    <label for="offername">Offer Name</label>
+                                    <input id="offername" class="form-control" name="offername" type="text"
+                                        placeholder="Enter The offer Name" style="display: block;" >
+
+                                    <div id="errMess">
+
+                                    </div>
+
+                                    <label for="product" class="mt-4">Choose product</label><br>
+
+                                    <select name="product" id="product" onchange="checkProductHaveOffer()">
+                                        <option value="">Select A product</option>
+                                        {{!-- All products --}}
+                                        {{#each products}}
+                                        <option value="{{this._id}}">{{this.productname}}</option>
+                                        {{/each}}
+                                        {{!-- All products ends --}}
+                                    </select><br>
+
+                                    <label for="expiry" class="mt-4">Expiry Date</label>
+                                    <input id="expiry" class="form-control " name="offerexpiry" type="date"
+                                        style="display: block;" oninput="setExpToMin()">
+
+                                    <label for="offerdiscount" class="mt-4">Offer Discount</label>
+                                    <input id="offerdiscount" class="form-control " name="offerdiscount" type="text"
+                                        placeholder="Enter The offer discount" style="display: block;">
+
+                                    <button type="submit" class="btn btn-success mt-5" id="cnfrm-btn"> Add Offer</button>
+
+                                    <button type="button" class="btn btn-secondary mt-5"
+                                        data-dismiss="modal">Close</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{!-- Modal ends --}}
+
+
+            <table style="width: 70%;" cellpadding="0" cellspacing="0" border="0" style="margin-top: 19px;"
+                class="datatable table table-striped table-bordered" id="myTable">
+                <thead>
+                    <tr>
+                        <th><strong>Sl. No</strong></th>
+                        <th><strong>Offer Name</strong></th>
+                        <th><strong>Product Name</strong></th>
+                        <th><strong> Discount (%)</strong></th>
+                        <th class="text-center"><strong>Created Date</strong></th>
+                        <th><strong> Expiry Date</strong></th>
+                        <th class="text-center"><strong> Action</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each offers}}
+                    <tr class="gradeX">
+                        <td>{{add @index '1'}}</td>
+                        <td>{{this.offername}}</td>
+                        <td>{{this.productName}}</td>
+                        <td>{{this.offerdiscount}}%</td>
+                        <td>{{this.offercreatedAt}}</td>
+                        <td>{{this.offerexpiry}}</td>
+                        {{!-- Delete offer --}}
+                        <td class="text-center">
+                            <a class="btn btn-success" style="color: white;">Edit</a>
+
+                            <a onclick="deleteProOffer('{{this._id}}','{{this.productName}}')" class="btn btn-danger" style="color: white;">Delete</a>
+                        </td>
+                    </tr>
+
+                    {{/each}}
+
+                </tbody>
+            </table>
+            {{!--
+        </form> --}}
+    </section>
+</center>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
+
+
+<script>
+    $(document).ready(function(){
+        $('#productOfferform').validate({
+            rules:{
+                offername:{
+                  required : true,
+                },
+                product:{
+                    required : true,
+                },
+                offerexpiry:{
+                    required : true,
+                },
+                offerdiscount :{
+                    required : true,
+                    digits : true,
+                    maxlength : 2,
+                }
+            }
+        })
+    })
+</script>
+
+<script>
+    function checkProductHaveOffer() {
+  
+        proId = document.getElementById('product').value
+        $.ajax({
+            url: '/admin/checkproducthaveoffer/' + proId,
+            method: 'get',
+            success: (response) => {
+                
+                if (response) {
+                    document.getElementById('errMess').style.display = 'block'
+                    document.getElementById('errMess').innerHTML = '<span style="color: red;">The product already have an ongoing offer</span>'
+                    document.getElementById('cnfrm-btn').style.display = 'none'
+                } else {
+                    document.getElementById('cnfrm-btn').style.display = 'inline'
+                    document.getElementById('errMess').style.display = 'none'
+                }
+            }
+        })
+    }
+</script>
+
+<script>
+    function setExpToMin() {
+
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+
+        today = yyyy + '-' + mm + '-' + dd;
+
+        document.getElementById("expiry").setAttribute("min", today);
+    }
+</script>
+
+<style>
+    select {
+
+        appearance: none;
+        background-color: rgb(255, 255, 255);
+        border: 1px solid black;
+        border-radius: 8px;
+        padding: 0 1em 0 0;
+        margin: 0;
+        width: auto;
+        font-family: inherit;
+        font-size: inherit;
+        cursor: inherit;
+        line-height: inherit;
+    }
+
+    select::-ms-expand {
+        display: none;
+    }
+
+    select {
+
+        outline: none;
+    }
+</style>

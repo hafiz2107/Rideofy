@@ -1,0 +1,589 @@
+<section id="shopgrid" class="shop shop-single">
+
+
+
+  <div class="container shop-content">
+    {{!-- Product Main single image --}}
+    <div class="row" id="topDiv">
+      <div class="col-xs-12 col-sm-12 col-md-5">
+        <div class="prodcut-images">
+          <div class="product-img-slider">
+            <img src="/uploads/{{singleProduct._id}}__1.jpg" alt="product image" class="zoom-image" />
+            <img src="/uploads/{{singleProduct._id}}__2.jpg" alt="product image" class="zoom-image" />
+            <img src="/uploads/{{singleProduct._id}}__3.jpg" alt="product image" class="zoom-image" />
+
+          </div>
+          {{!-- Product nav images --}}
+          <div class="product-img-nav">
+            <img src="/uploads/{{singleProduct._id}}__1.jpg" alt="product image" style="height: 70px;"
+              class="small-image" />
+            <img src="/uploads/{{singleProduct._id}}__2.jpg" alt="product image" style="height: 70px;"
+              class="small-image" />
+            <img src="/uploads/{{singleProduct._id}}__3.jpg" alt="product image" style="height: 70px;"
+              class="small-image" />
+
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-7">
+        <div class="product-title text-center-xs">
+          <h3>{{singleProduct.productname}}
+            <div class="wishBack" style="display: inline;margin-left: 10px;">
+              {{#if logStatus}}
+              {{#checkItemExistOnWishlist wishlist singleProduct._id}}
+              {{/checkItemExistOnWishlist}}
+              {{else}}
+              <a class="wishOn " style=" width: 20px; border: white" href="/login/?wishId={{singleProduct._id}}"><i class="bi bi-heart"></i></a>
+              {{/if}}
+              
+
+            </div>
+          </h3>
+          {{#lte singleProduct.productquantity '0'}}
+          <h4 class="text-danger">Sold Out</h4>
+          {{/lte}}
+
+        </div>
+
+        <div class="product-meta mb-30">
+          <div class="product-price pull-left pull-none-xs">
+            <p><span class="discount">₹ {{singleProduct.productofferprice}}</span>₹{{singleProduct.productprice}}</p>
+          </div>
+        </div><br>
+
+        <div class="product-desc text-center-xs">
+          <p class="mb-0">{{singleProduct.productdes}}</p>
+        </div>
+
+        <hr class="mt-30 mb-30" />
+        <div class="product-details text-center-xs">
+          <h5>Other Details :</h5>
+          <ul class="list-unstyled">
+            <li>Product : <span>{{singleProduct.productname}}</span></li>
+            <li>Code : <span>{{singleProduct.productcode}}</span></li>
+
+            <li>Availabiltity : {{#lte singleProduct.productquantity '0'}} <span
+                style="font-size:20px !important; color: red !important">Sold Out</span>{{else}}Available{{/lte}} </li>
+
+
+            <li>Brand : <span>{{singleProduct.productbrand}}</span></li>
+          </ul>
+        </div>
+
+        <hr class="mt-30 mb-30" />
+        <div class="product-action">
+
+          <div class="product-cta text-right text-center-xs">
+            {{#gt singleProduct.productquantity '0'}}
+            <a class="btn btn-primary" href="/checkoutbuynow/{{singleProduct._id}}">Buy Now</a>
+            {{/gt}}
+
+
+
+
+            {{#gt singleProduct.productquantity '0'}}
+            {{#if logStatus}}
+            {{#checkItemExistInCart items singleProduct._id singleProduct.productprice}}
+            {{/checkItemExistInCart}}
+            {{else}}
+            <a href="/login?id={{singleProduct._id}}&price={{singleProduct.productprice}}&name={{singleProduct.productname}}" class="btn btn-primary add-to-cart">Add to cart</a>
+            {{/if}}
+
+            {{/gt}}
+          </div>
+        </div>
+
+        <hr class="mt-30 mb-30" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12">
+        <center>
+          <div class="product-tabs" style="width: 80%;margin-top: 5em;">
+
+            <ul class="nav nav-tabs" role="tablist">
+
+              <li role="presentation" class="active">
+                <a href="#description" aria-controls="description" role="tab" data-toggle="tab">description</a>
+              </li>
+             
+              <li role="presentation">
+                <a href="#reviews" aria-controls="reviews" role="tab" data-toggle="tab">reviews ({{reviewCount}})</a>
+              </li>
+
+            </ul>
+
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane active" style="overflow-wrap: break-word;" id="description">
+                <h6 >{{singleProduct.productdes}}</h6>
+              </div>
+
+              {{!-- Review Section --}}
+              <div role="tabpanel" class="tab-pane reviews" id="reviews">
+
+                {{#if review}}
+                {{!-- Displaying user own comment --}}
+                <ul class="product-review list-unstyled text-left" style="overflow-y: scroll;height: 30em;">
+                  {{#if userComment}}
+                  <h3 class="text-center">Your review</h3>
+                  <li class="review-comment">
+
+                    <h6>{{userComment.username}}
+                      <a style="margin-left: 5px;"
+                        onclick="editComment('{{userComment.review}}','{{userComment.rating}}')" data-toggle="modal"
+                        id="editBtn"><i class="bi bi-pen"></i></a>
+
+                      <a style="margin-left: 5px;"
+                        onclick="deleteComment('{{userComment.user}}','{{singleProduct._id}}')"><i
+                          class="bi bi-trash"></i></a>
+                    </h6>
+
+
+
+
+
+                    {{!-- Modal for edit review --}}
+                    <div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+                      aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body text-center">
+
+                            <form id="reviewform">
+                              {{!-- Star Rating --}}
+                              <label>Rating</label><br>
+                              <span class="star-rating">
+                                <input type="radio" id="1" name="rating1" value="1"><i></i>
+                                <input type="radio" id="2" name="rating1" value="2"><i></i>
+                                <input type="radio" id="3" name="rating1" value="3"><i></i>
+                                <input type="radio" id="4" name="rating1" value="4"><i></i>
+                                <input type="radio" id="5" name="rating1" value="5"><i></i>
+                              </span>
+                              {{!-- Start Rating --}}
+
+                              <textarea class="form-control" id="review" rows="2" placeholder="Review"></textarea>
+                              <button
+                                onclick="postEditedReviewForm('{{singleProduct._id}}','{{singleProduct.productname}}','{{theUser._id}}','{{theUser.username}}')"
+                                class="btn btn-primary btn-black btn-block">Edit review</button>
+                            </form>
+
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                    {{!-- Modal ends --}}
+
+                    <p class="review-date">{{userComment.reviewDate}}</p>
+
+
+                    <div class="product-rating">
+                      {{#printStar userComment.rating}}
+                      {{/printStar}}
+                    </div>
+
+                    <div class="product-comment">
+                      <p style="color: black;">{{userComment.review}}</p>
+                    </div>
+                  </li>
+
+                  {{else}}
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reviewModal"
+                    style="margin-bottom: 3em;">
+                    Add Review
+                  </button>
+                  {{/if}}
+                  {{!-- User own Comment ends --}}
+
+                  {{!-- Evry review --}}
+                  <h3 class="text-center">Review</h3>
+                  {{#each review.proReview}}
+
+
+                  <li class="review-comment">
+
+                    <h6>{{this.username}}</h6>
+
+                    <p class="review-date">{{this.reviewDate}}</p>
+
+
+                    <div class="product-rating">
+                      {{#printStar this.rating}}
+                      {{/printStar}}
+                    </div>
+
+                    <div class="product-comment">
+                      <p style="color: black;">{{this.review}}</p>
+                    </div>
+                  </li>
+
+                  {{/each}}
+                </ul>
+                {{!-- every review ends --}}
+
+                <hr>
+                {{else}}
+                <div class="">
+                <h3 style="color: rgb(122, 122, 122);">No reviews Yet !</h3><br>
+                <img src="/images/No review.svg" alt="" height="200px">
+                </div>
+                {{#if checkUserPurchasedItem}}
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reviewModal"
+                  style="margin-bottom: 3em;">
+                  Add Review
+                </button>
+                {{/if}}
+                {{/if}}
+
+                {{!-- Modal --}}
+                <div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                  aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Your Rating</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <center>
+                          <div class="form-review">
+
+                            <form id="reviewform">
+                              {{!-- Star Rating --}}
+                              <label>Rating</label><br>
+                              <span class="star-rating">
+                                <input type="radio" name="rating1" value="1" required-any="group1"><i></i>
+                                <input type="radio" name="rating1" value="2" required-any="group1"><i></i>
+                                <input type="radio" name="rating1" value="3" required-any="group1"><i></i>
+                                <input type="radio" name="rating1" value="4" required-any="group1"><i></i>
+                                <input type="radio" name="rating1" value="5" required-any="group1"><i></i>
+                              </span>
+                              {{!-- Start Rating --}}
+                              <textarea class="form-control" id="review" name="review" rows="2" placeholder="Your Review"></textarea>
+                              <button
+                                onclick="postReviewForm('{{singleProduct._id}}','{{singleProduct.productname}}','{{theUser._id}}','{{theUser.username}}')"
+                                class="btn btn-primary btn-black btn-block">Post Your review</button>
+                            </form>
+
+                          </div>
+                        </center>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                {{!-- Modal Ends --}}
+
+              </div>
+              {{!-- Review section Ends --}}
+            </div>
+
+          </div>
+        </center>
+      </div>
+    </div>
+
+
+
+    <div class="row" style="margin-top: 15px;">
+      <div class="col-xs-12 col-sm-12 col-md-12 ">
+        <div class="widget-related-product">
+          <div class="widget-title">
+            <h4>Related Products</h4>
+          </div>
+          <div class="widget-content">
+            <div class="row">
+
+              {{#each relatedProduct}}
+
+              <div class="col-xs-12 col-sm-6 col-md-3 product">
+                <div class="product-img">
+
+                  <img src="/uploads/{{this._id}}__1.jpg" alt="Product" />
+                  <input type="text" hidden class="product-id" value="{{this._id}}">
+                  <div class="product-hover">
+                    <div class="product-action">
+                      {{#hello ../items this._id this.productprice }}
+                      {{/hello}}
+                      <a class="btn btn-primary payment" onclick="buyNow({{this._id}})">Buy Now</a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="product-bio">
+                  <div class="prodcut-cat">
+                    <a href="/productview/{{this._id}}">{{this.productbrand}}</a>
+                  </div>
+
+                  <div class="prodcut-title">
+                    <h3>
+                      <a href="/productview/{{this._id}}">{{this.productname}}</a>
+                    </h3>
+                  </div>
+
+                  <div class="product-price">
+                    <span class="symbole">₹ </span><span>{{this.productprice}}</span>
+                  </div>
+
+                </div>
+
+              </div>
+              {{/each}}
+              <script>
+                window.onclick = (event) => {
+                  var payment = document.getElementsByClassName('payment')
+                  var addToCart = document.getElementsByClassName('add-to-cart')
+                  var hover = document.getElementsByClassName('product-hover')
+                  var product_id = document.getElementsByClassName('product-id')
+
+                  for (var i = 0; i < payment.length; i++) {
+                    if (event.target === payment[i]) {
+                      location.href = '/checkoutbuynow/' + product_id[i].value
+                      break;
+                    } else if (event.target === addToCart[i]) {
+                      break;
+                    } else if (event.target === hover[i]) {
+                      location.href = "/productview/" + product_id[i].value
+                      break;
+                    }
+                  }
+
+
+                }
+              </script>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
+<script>
+
+  function postEditedReviewForm(proId, proName, userId, userName) {
+    ratingCheck = document.querySelector('input[name="rating1"]:checked')
+    var rating = ratingCheck ? parseInt(ratingCheck.value) : 0;
+    var review = document.getElementById('review').value
+
+    $.ajax({
+      url: '/editreview',
+      data: {
+        proId: proId,
+        proName: proName,
+        user: userId,
+        userName: userName,
+        rating: rating,
+        review: review,
+      },
+      method: 'post',
+
+      success: (response1) => {
+
+      }
+    })
+  }
+
+
+  function postReviewForm(proId, proName, userId, userName) {
+    //var rating = document.getElementById('reviewform').value
+    ratingCheck = document.querySelector('input[name="rating1"]:checked')
+    var rating = ratingCheck ? parseInt(ratingCheck.value) : 0;
+
+    var review = document.getElementById('review').value
+
+    $.ajax({
+      url: '/postreviewform',
+      data: {
+        proId: proId,
+        proName: proName,
+        user: userId,
+        userName: userName,
+        rating: rating,
+        review: review,
+      },
+      method: 'post',
+
+      success: (response1) => {
+        location.hash = '#'
+        var myDiv = document.getElementById("topDiv");
+        myDiv.scrollTop = myDiv.scrollHeight;
+      }
+    })
+  }
+  
+</script>
+
+
+<style>
+  .wishBack {
+    background-color: #c2c2c23d;
+    padding: 6px;
+    border-radius: 60px;
+  }
+
+  /*Rating*/
+
+
+  .star-rating {
+    margin: 25px 0 0px;
+    font-size: 0;
+    white-space: nowrap;
+    display: inline-block;
+    width: 175px;
+    height: 35px;
+    overflow: hidden;
+    position: relative;
+    background: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjBweCIgaGVpZ2h0PSIyMHB4IiB2aWV3Qm94PSIwIDAgMjAgMjAiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDIwIDIwIiB4bWw6c3BhY2U9InByZXNlcnZlIj48cG9seWdvbiBmaWxsPSIjREREREREIiBwb2ludHM9IjEwLDAgMTMuMDksNi41ODMgMjAsNy42MzkgMTUsMTIuNzY0IDE2LjE4LDIwIDEwLDE2LjU4MyAzLjgyLDIwIDUsMTIuNzY0IDAsNy42MzkgNi45MSw2LjU4MyAiLz48L3N2Zz4=');
+
+    background-size: contain;
+  }
+
+  .star-rating i {
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 20%;
+    z-index: 1;
+    background: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjBweCIgaGVpZ2h0PSIyMHB4IiB2aWV3Qm94PSIwIDAgMjAgMjAiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDIwIDIwIiB4bWw6c3BhY2U9InByZXNlcnZlIj48cG9seWdvbiBmaWxsPSIjRkZERjg4IiBwb2ludHM9IjEwLDAgMTMuMDksNi41ODMgMjAsNy42MzkgMTUsMTIuNzY0IDE2LjE4LDIwIDEwLDE2LjU4MyAzLjgyLDIwIDUsMTIuNzY0IDAsNy42MzkgNi45MSw2LjU4MyAiLz48L3N2Zz4=');
+    background-size: contain;
+  }
+
+  .star-rating input {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    opacity: 0;
+    display: inline-block;
+    width: 20%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    z-index: 2;
+    position: relative;
+  }
+
+  .star-rating input:hover+i,
+  .star-rating input:checked+i {
+    opacity: 1;
+  }
+
+  .star-rating i~i {
+    width: 40%;
+  }
+
+  .star-rating i~i~i {
+    width: 60%;
+  }
+
+  .star-rating i~i~i~i {
+    width: 80%;
+  }
+
+  .star-rating i~i~i~i~i {
+    width: 100%;
+  }
+
+  span.scale-rating {
+    margin: 5px 0 15px;
+    display: inline-block;
+
+    width: 100%;
+
+  }
+
+  span.scale-rating>label {
+    position: relative;
+    -webkit-appearance: none;
+    outline: 0 !important;
+    border: 1px solid grey;
+    height: 33px;
+    margin: 0 5px 0 0;
+    width: calc(10% - 7px);
+    float: left;
+    cursor: pointer;
+  }
+
+  span.scale-rating label {
+    position: relative;
+    -webkit-appearance: none;
+    outline: 0 !important;
+    height: 33px;
+
+    margin: 0 5px 0 0;
+    width: calc(10% - 7px);
+    float: left;
+    cursor: pointer;
+  }
+
+  span.scale-rating input[type=radio] {
+    position: absolute;
+    -webkit-appearance: none;
+    opacity: 0;
+    outline: 0 !important;
+    /*border-right: 1px solid grey;*/
+    height: 33px;
+
+    margin: 0 5px 0 0;
+
+    width: 100%;
+    float: left;
+    cursor: pointer;
+    z-index: 3;
+  }
+
+  span.scale-rating label:hover {
+    background: #fddf8d;
+  }
+
+  span.scale-rating input[type=radio]:last-child {
+    border-right: 0;
+  }
+
+  span.scale-rating label input[type=radio]:checked~label {
+    -webkit-appearance: none;
+
+    margin: 0;
+    background: #fddf8d;
+  }
+
+  span.scale-rating label:before {
+    content: attr(value);
+    top: 7px;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+    vertical-align: middle;
+    z-index: 2;
+  }
+
+  /*Rating Ends */
+</style>
+<script>
+  
+</script>
+
+{{!-- Edit review --}}
+<script>
+  function editComment(review, rating) {
+    document.getElementById('editBtn').dataset.target = '#editModal'
+    document.getElementById('review').value = review
+    document.getElementById(rating).checked = true
+  }
+</script>
+{{!-- Edit review Ends --}}

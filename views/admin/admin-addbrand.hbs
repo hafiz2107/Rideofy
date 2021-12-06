@@ -1,0 +1,183 @@
+<div id="wrap" class="container-fluid" style="padding-left: 285px;">
+
+    <section class="col-sm-12 col-lg-12 col-md-12 ml-5 mt-5">
+        <H3 class="card-header card-header-black">Add Product brands</H3>
+        {{#if proBrandAddSuccess}}
+            <p style="color: green;">{{proBrandAddSuccess}}</p>
+        {{/if}}
+        {{#if bikebrandDelted}}
+            <p style="color: red;">{{bikebrandDelted}}</p>
+        {{/if}}
+        <form style="width: ;" method="POST" action='/admin/addprobrand' enctype="multipart/form-data" id="addBrandForm">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col"><strong>Brand Name</strong></th>
+                        <th scope="col"><strong>Brand Logo</strong></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td scope="row">
+                            <input type="text" name="brandName" placeholder="Enter The brand name">
+                        </td>
+                        <td>
+                            <div id="errMess1"></div>
+
+                            <label for="file1" class="btn btn-primary"
+                                type="button" class="btn btn-primary">Add Image</label>
+                            <input data-toggle="modal" type="file" name="productlogo" id="file1" onchange="return fileValidation()" hidden>
+                            <img src="" alt="" style="width: 100px; height:auto;display: inherit;" id="imgview1">
+                        </td>
+                        <td>
+                            <button type="submit" class="btn btn-primary" id="confirm-btn">Add product Brand</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            {{!-- Modal for image cropping --}}
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Crop Image</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-12">
+                                <div style="width: 300px; height: auto; display: none;" id="image-box"></div>
+                                <button style="display: none;" class="btn btn-primary mt-4" type="button" id="crop-btn"
+                                    data-dismiss="modal">Crop</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                    onclick="buttonChange()">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{!-- Modal for image cropping ends --}}
+        </form>
+<div class="container">
+        <table cellpadding="0" cellspacing="0" border="0" class=" datatable table table-striped table-bordered" id="myTable">
+            <thead>
+                <tr>
+                    <th><strong>Sl. No</strong></th>
+                    <th><strong>Brand</strong></th>
+                    <th><strong>Brand Logo</strong></th>
+                    <th><strong>Action</strong></th>
+                </tr>
+            </thead>
+                    <tbody>
+                        {{#each allBrands}}
+                            <tr class="gradeX">
+                                <td>{{add @index '1'}}</td>
+                                <td>{{this.ProBrand}}</td>
+                                <td><img src="/product brand logos/{{this._id}}__1.jpg" alt="" style="height: 50px;"></td>
+                                <td><a href="/admin/deletebrand/{{this._id}}" class="btn btn-danger">Delete brand</a></td>
+                            </tr>
+                        {{/each}}
+                           
+                    </table>
+</div>
+    </section>
+
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#addBrandForm').validate({
+            ignore : '',
+            rules: {
+                brandName: {
+                    required: true,
+                },
+                productlogo: {
+                    required: true,
+                }
+            }
+        })
+    })
+</script>
+
+<script>
+    function fileValidation() {
+        const imagebox = document.getElementById('image-box')
+        const crop_btn = document.getElementById('crop-btn')
+        var fileInput = document.getElementById('file1');
+
+        var filePath = fileInput.value;
+        var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+        if (!allowedExtensions.exec(filePath)) {
+            document.getElementById('errMess1').innerHTML = '<p style="color:red; display: block;">Invalid file type</p>'
+            fileInput.value = '';
+            return false;
+        } else {
+            document.getElementById('errMess1').innerHTML = ''
+
+            //Image input field id
+            var fileTrue = document.getElementById('file1').onchange.length
+            if(fileTrue == 1){
+                document.getElementById('file1').dataset.target = '#exampleModal'
+                //Give modal target to the input field
+
+                //add a click event to the input field so that the modal could open
+                document.getElementById('file1').click()
+
+                //Making filetrue to 0 So that the modal will only open if there is a file 
+            }
+            //Making data target to none so that modal will open if there is a file
+            document.getElementById('file1').dataset.target = 'none'
+
+            //Image preview
+            const img_data = fileInput.files[0]
+            const url = URL.createObjectURL(img_data)
+            imagebox.innerHTML = `<img src="${url}" id="image" style="width:100%">`
+            const image = document.getElementById('image')
+            document.getElementById('image-box').style.display = 'block'
+            document.getElementById('crop-btn').style.display = 'block'
+            document.getElementById('confirm-btn').style.display = 'block'
+
+            const cropper = new Cropper(image, {
+                autoCropArea: 1,
+                viewMode: 2,
+                scalable: false,
+                zoomable: true,
+                movable: true,
+                aspectRatio: 16 / 9,
+                //  preview: '.preview',
+                minCropBoxWidth: 180,
+                minCropBoxHeight: 240,
+            })
+            crop_btn.addEventListener('click', () => {
+                cropper.getCroppedCanvas().toBlob((blob) => {
+                    let fileInputElement = document.getElementById('file1');
+                    let file = new File([blob], img_data.name, { type: "image/*", lastModified: new Date().getTime() });
+                    let container = new DataTransfer();
+
+                    container.items.add(file);
+                    const img = container.files[0]
+                    var url = URL.createObjectURL(img)
+                    fileInputElement.files = container.files;
+                    document.getElementById('imgview1').src = url
+                    document.getElementById('image-box').style.display = 'none'
+                    document.getElementById('crop-btn').style.display = 'none'
+                    document.getElementById('confirm-btn').style.display = 'block'
+
+                });
+            });
+        }
+    }
+</script>

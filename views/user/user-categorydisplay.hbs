@@ -1,0 +1,96 @@
+<section id="shopgrid" class="shop shop-grid">
+    <div class="container">
+        
+        <div class="row">
+            {{#each pro}}
+            <div class="col-xs-12 col-sm-6 col-md-3 product">
+
+                <div class="product-img">
+                    {{#lte this.productquantity '0'}}
+                    <img id="" src="/uploads/{{this._id}}__1.jpg" alt="Product" style="height: 430px;" />
+                    <img src="/images/Sold Out.png" alt="" style="display: inline; top: -440px; margin-bottom: -270px;">
+                    <input type="text" hidden class="product-id" value="{{this._id}}">
+                    {{else}}
+                    <img src="/uploads/{{this._id}}__1.jpg" alt="Product" />
+                    <input type="text" hidden class="product-id" value="{{this._id}}">
+                    {{/lte}}
+
+                    <div class="product-hover " style="cursor: pointer;">
+                        <div class="product-action">
+                            {{!-- To hide and display the add to cart and buy now related to the quantity --}}
+                            {{#gt this.productquantity '0'}}
+                            {{#if ../logStatus}}
+                            <a id="" class="btn btn-primary payment">Buy Now</a>
+                            {{else}}
+                            <a href="/login" class="btn btn-primary payment">Buy Now</a>
+                            {{/if}}
+                            {{else}}
+                            <a id="" class="btn btn-primary payment" style="display: none;">Buy Now</a>
+                            {{/gt}}
+
+                            {{#gt this.productquantity '0'}}
+                            {{#if ../logStatus}}
+                            {{#hello ../items this._id this.productprice this.productname}}
+                            {{/hello}}
+                            {{else}}
+                            <a href="/login" class="btn btn-primary add-to-cart">Add To Cart</a>
+                            {{/if}}
+
+                            {{/gt}}
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="product-bio">
+                    <div class="prodcut-cat">
+                    <a href="/getproductsonprobrand/{{this.productbrand}}">{{this.productbrand}}</a>
+                    </div>
+
+                    <div class="prodcut-title">
+                        <h3>
+                            <a href="/productview/{{this._id}}">{{this.productname}}</a>
+                        </h3>
+                    </div>
+
+                    <div class="product-price">
+                        <span class="symbole">₹ </span><span>{{this.productprice}}</span>
+                    </div>
+                    {{#if this.offer}}
+                    <span>MRP : ₹<s>{{this.productofferprice}}</s><span style="color: green;"> {{this.offer}} %
+                            OFF</span></span>
+
+                    {{/if}}
+                </div>
+
+            </div>
+            {{/each}}
+        </div>
+</section>
+
+<script>
+    window.onclick = (event) => {
+        var payment = document.getElementsByClassName('payment')
+        var addToCart = document.getElementsByClassName('add-to-cart')
+        var hover = document.getElementsByClassName('product-hover')
+        var product_id = document.getElementsByClassName('product-id')
+
+
+
+        for (var i = 0; i < hover.length; i++) {
+
+            if (event.target === payment[i]) {
+                location.href = '/checkoutbuynow/' + product_id[i].value
+                break;
+            } else if (event.target === addToCart[i]) {
+                break;
+            }
+            else if (event.target === hover[i]) {
+                location.href = "/productview/" + product_id[i].value
+                break;
+            }
+        }
+
+
+    }
+</script>

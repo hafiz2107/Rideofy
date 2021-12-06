@@ -1,0 +1,315 @@
+<div id="wrap" class="container-fluid" style="padding-left: 285px;">
+    <div class="">
+        <h3>Category Management</h3>
+
+        <div class="row">
+            <div class="col-md-6">
+                <form action="/admin/addmaincategory" method="post" id="addMainCategoryForm">
+                    <input type="text" name="mainCategory" placeholder="Enter The name of main category">
+                    <button type="submit" class="btn btn-primary">Add Category</button>
+                </form>
+            </div>
+
+            <div class="col-md-6">
+
+                <form action="/admin/addsubcat" method="post" enctype="multipart/form-data" id="addSubCarForm">
+                    <input type="text" name="subCat">
+                    <select name="mainCatId" id="">
+                        <option value="" selected>Select Main Category</option>
+                        {{#each allCategories}}
+                        <option value="{{this._id}}">{{this.mainCategory}}</option>
+                        {{/each}}
+                    </select><br>
+                    <label for="subCatImg" class="btn btn-success" >Add Logo</label>
+
+                    <div id="errMess2"></div>
+                        <input type="file" name="subCatImg" id="subCatImg" data-toggle="modal"  onchange="modelImage()" hidden aria-required="true">
+                    <img src="" alt="" id="image-view-model" height="150px">
+                    <button type="submit" class="btn btn-success" id="confirm-btn1">Add subcategory</button>
+                </form>
+
+                {{!-- Image cropping modal --}}
+                <div class="modal fade" id="modelImages" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Crop Image</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="col-12">
+                                    
+                                    <div style="width: 300px; height: auto; display: none;" id="image-box1"></div>
+                                    <button style="display: none;" class="btn btn-primary mt-4" type="button"
+                                        id="crop-btn1" data-dismiss="modal">Crop</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{!-- Image cropping modal ends --}}
+
+            </div>
+        </div>
+
+        {{#if catDeleted}}
+        <center>
+            <p style="color: red;"><strong>{{catDeleted}}</strong></p>
+        </center>
+        {{/if}}
+
+        {{#if NewcatAdded}}
+        <center>
+            <p style="color: green;"><strong>{{NewcatAdded}}</strong></p>
+        </center>
+        {{/if}}
+        <table cellpadding="0" cellspacing="0" border="0" class="datatable table table-striped table-bordered"
+            id="catTable">
+            <thead>
+                <tr>
+                    <th><strong>Sl. No</strong></th>
+                    <th><strong>Main Category</strong></th>
+                    <th><strong>Sub categories</strong></th>
+                    <th><strong>Action</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{!-- Loop for displaying all catgories --}}
+                {{#each allCategories}}
+
+                <tr class="gradeX">
+                    <td>{{add @index '1'}}</td>
+                    <td>{{this.mainCategory}}</td>
+                    {{!-- Loop for sub catgory --}}
+
+                    <td>
+
+
+                        <ol>
+                            {{#each this.SubCategory}}
+                            <li>
+                                <img src="/subCat Logo/{{this.id}}__1.jpg" alt="" height="50px">
+                                {{this.subCat}}
+                                {{!-- Delete button --}}
+                                <a class=" btn-secondary" data-toggle="modal" data-target="#{{this.id}}"> <i
+                                        class="bi bi-trash"></i></a>
+                            </li>
+                            <hr>
+
+
+                            {{!-- modal for category deletion for sub cat --}}
+                            <div class="modal fade" id="{{this.id}}" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h3 class="modal-title" style="color: red;" id="exampleModalLabel">Delete
+                                            </h3>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h5>Are you sure you want to delete ?</h5>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-success"
+                                                data-dismiss="modal">Cancel</button>
+                                            <a type="button"
+                                                href="/admin/deletesubcat?index={{@index}}&id={{../this._id}}&name={{this.id}}"
+                                                class="btn btn-danger" style="width: 90px;">Delete</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            {{!-- modal ends --}}
+                            {{/each}}
+                        </ol>
+                    </td>
+
+
+                    {{!-- Modal for delete confirmation --}}
+                    <div class="modal fade" id="{{this._id}}" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h3 class="modal-title" style="color: red;" id="exampleModalLabel">Delete</h3>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <h5>Are you sure you want to delete ?</h5>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
+                                    <a type="button" href="/admin/deletecategory/{{this._id}}" class="btn btn-danger"
+                                        style="width: 90px;">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{!-- Modal ends --}}
+
+                    <td>
+                        <a data-toggle="modal" data-target="#{{this._id}}" class="btn btn-danger">Delete Category</a>
+
+                    </td>
+
+                    {{!-- Loop end --}}
+                </tr>
+                {{/each}}
+
+        </table>
+
+    </div>
+</div>
+
+
+
+<style>
+    select {
+
+        appearance: none;
+        background-color: rgb(255, 255, 255);
+        border: 1px solid black;
+        border-radius: 8px;
+        padding: 0 1em 0 0;
+        margin: 0;
+        width: auto;
+        font-family: inherit;
+        font-size: inherit;
+        cursor: inherit;
+        line-height: inherit;
+    }
+
+    select::-ms-expand {
+        display: none;
+    }
+
+    select {
+
+        outline: none;
+    }
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#addMainCategoryForm').validate({
+            rules: {
+                mainCategory: {
+                    required: true,
+                }
+            }
+        })
+    })
+
+    $(document).ready(function () {
+        $("#addSubCarForm").validate({
+            ignore : "",
+
+            rules: {
+                subCat: {
+                    required: true
+                },
+                mainCatId: {
+                    required: true
+                },
+                subCatImg: {
+                    required: true,
+                }
+            }
+        })
+    })
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#catTable').DataTable();
+    });
+</script>
+
+<script>
+    function modelImage() {
+        const imagebox = document.getElementById('image-box1')
+        const crop_btn = document.getElementById('crop-btn1')
+        var fileInput = document.getElementById('subCatImg');
+
+        
+        var filePath = fileInput.value;
+        
+        var allowedExtensions = /(\.jpg)$/i;
+        if (!allowedExtensions.exec(filePath)) {
+            document.getElementById('errMess2').innerHTML = '<p style="color:red; display: block;">Invalid file type</p>'
+            fileInput.value = '';
+            return false;
+        } else {
+            document.getElementById('errMess2').innerHTML = ''
+             //Image input field id
+                var fileTrue2 = document.getElementById('subCatImg').onchange.length
+                if (fileTrue2 == 1) {
+                    document.getElementById('subCatImg').dataset.target = '#modelImages'
+                    //Give modal target to the input field
+
+                    //add a click event to the input field so that the modal could open
+                    document.getElementById('subCatImg').click()
+
+                    //Making filetrue to 0 So that the modal will only open if there is a file 
+                    fileTrue2 = 0
+                }
+                //Making data target to none so that modal will open if there is a file
+                document.getElementById('subCatImg').dataset.target = 'none'
+            //Image preview
+            const img_data = fileInput.files[0]
+            const url = URL.createObjectURL(img_data)
+            imagebox.innerHTML = `<img src="${url}" id="image1" style="width:100%">`
+            const image = document.getElementById('image1')
+            document.getElementById('image-box1').style.display = 'block'
+            document.getElementById('crop-btn1').style.display = 'block'
+            document.getElementById('confirm-btn1').style.display = 'block'
+
+            const cropper = new Cropper(image, {
+                autoCropArea: 1,
+                viewMode: 2,
+                scalable: false,
+                zoomable: true,
+                movable: true,
+                aspectRatio: 16 / 9,
+                //  preview: '.preview',
+                minCropBoxWidth: 180,
+                minCropBoxHeight: 240,
+            })
+            crop_btn.addEventListener('click', () => {
+                cropper.getCroppedCanvas().toBlob((blob) => {
+                    let fileInputElement = document.getElementById('subCatImg');
+                    let file = new File([blob], img_data.name, { type: "image/*", lastModified: new Date().getTime() });
+                    let container = new DataTransfer();
+
+                    container.items.add(file);
+                    const img = container.files[0]
+                    var url = URL.createObjectURL(img)
+                    fileInputElement.files = container.files;
+                    document.getElementById('image-view-model').src = url;
+                    document.getElementById('image-box1').style.display = 'none'
+                    document.getElementById('crop-btn1').style.display = 'none'
+                    document.getElementById('confirm-btn1').style.display = 'block'
+
+                });
+            });
+        }
+    }
+</script>

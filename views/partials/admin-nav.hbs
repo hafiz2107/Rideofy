@@ -1,0 +1,175 @@
+<div>
+  <div class="sidebar" data-color="danger" data-background-color="white" style="overflow-y: inherit;overflow-x:hidden">
+
+    <div class="logo">
+      <a href="#" class="simple-text logo-normal" style="text-decoration: none;">
+        <img src="/images/logo.png" alt="">
+        <h3>Admin Panel</h3>
+        <h6>Date : {{date}}</h6>
+        <h6>Day : {{weatherDet.day}}</h6>
+        <h6>Time :<span id="span"></span></h6>
+        <h6>Weather : {{weatherDet.temperature}}°C</h6>
+
+      </a>
+    </div>
+    <div class="sidebar-wrapper">
+      <ul class="nav">
+        <li class="nav-item active  ">
+          <a class="nav-link" href="/admin/home">
+            <i class="material-icons">dashboard</i>
+            <p>Home</p>
+          </a>
+        </li>
+
+        <li class="nav-item ">
+          <a class="nav-link" href="/admin/usermanagement"><i class="material-icons">person</i>User Management</a>
+        </li>
+
+
+        <li class="" id="productManagement">
+          <a href="#" data-toggle="dropdown" class="dropdown-toggle nav-link"> <i class="material-icons">category</i>
+            Product Management</a>
+
+          <ul class="dropdown-menu dropdown" id="navContent">
+            <li>
+              <a href="/admin/add-product" class="text-center"><i class="bi bi-plus-circle"
+                  style="font-size: 21px;"></i> Add Product</a>
+            </li>
+            <li>
+              <a href="/admin/view-product" class="text-center"> <i class="bi bi-eye" style="font-size: 21px;"></i> View
+                Products</a>
+            </li>
+
+          </ul>
+        </li>
+        <li class="" id="productManagement">
+          <a href="#" data-toggle="dropdown" class="dropdown-toggle nav-link"> <i
+              class="material-icons">content_paste</i> Order Management</a>
+
+          <ul class="dropdown-menu dropdown" id="navContent">
+            <li>
+              <a href="/admin/ordermanagement" class="text-center"> <i class="bi bi-eye" style="font-size: 21px;"></i>
+                View Orders</a>
+            </li>
+
+          </ul>
+
+        </li>
+
+
+        <li class="nav-item ">
+          <a class="nav-link" href="/admin/addmaincategory">
+            <i class="bi bi-tags"></i>
+            <p>Category Management</p>
+          </a>
+        </li>
+
+        <li class="" id="productManagement">
+          <a href="#" data-toggle="dropdown" class="dropdown-toggle nav-link"><i class="material-icons">books</i> Brand
+            Management</a>
+
+          <ul class="dropdown-menu dropdown" id="navContent">
+            <li>
+              <a href="/admin/brands" class="text-center"><i class="bi bi-diagram-3"></i>Product Brand Management</a>
+            </li>
+            <li>
+              <a href="/admin/bikebrands" class="text-center"><i class="bi bi-bicycle"></i>Bike brand Management</a>
+            </li>
+
+          </ul>
+        </li>
+
+
+
+
+
+        <li class="" id="productManagement">
+          <a data-toggle="dropdown" class="dropdown-toggle nav-link"><i class="material-icons">percentage</i>Advertisement Management</a>
+        
+          <ul class="dropdown-menu dropdown" id="navContent">
+            <li>
+              <a href="/admin/viewads" class="text-center"><i class="bi bi-diagram-3"></i>View ADS</a>
+            </li>
+            <li>
+              <a href="/admin/admanagement" class="text-center"><i class="bi bi-bicycle"></i>Add ADS</a>
+            </li>
+        
+          </ul>
+        </li>
+        {{!-- <li class="nav-item ">
+          <a class="nav-link" href="#">
+            <i class="material-icons">location_ons</i>
+            <p>Maps</p>
+          </a>
+        </li> --}}
+        <li class="nav-item ">
+          <a class="nav-link" href="/admin/report">
+            <i class="material-icons">point_of_sale</i>
+            <p>Sales Report</p>
+          </a>
+        </li>
+
+
+        {{!-- Offer --}}
+        <li class="" id="productManagement">
+          <a  data-toggle="dropdown" class="dropdown-toggle nav-link"><i class="material-icons">percentage</i> Offer Management</a>
+
+          <ul class="dropdown-menu dropdown" id="navContent">
+            <li>
+              <a href="/admin/offermanagement" class="text-center"><i class="bi bi-diagram-3"></i>Category Offers</a>
+            </li>
+            <li>
+              <a href="/admin/productoffers" class="text-center"><i class="bi bi-bicycle"></i>Product Offers</a>
+            </li>
+
+          </ul>
+        </li>
+        {{!-- Offer Ends --}}
+        
+
+        <li class="nav-item ">
+          <a class="nav-link" href="/admin/coupons">
+            <i class="material-icons">notifications</i>
+            <p>Coupon Management</p>
+          </a>
+        </li>
+        <!-- <li class="nav-item active-pro ">
+                <a class="nav-link" href="./upgrade.html">
+                    <i class="material-icons">unarchive</i>
+                    <p>Upgrade to PRO</p>
+                </a>
+            </li> -->
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    setInterval(time, 1);
+    function show() {
+      document.getElementById('navContent').style.display = inline
+    }
+
+    var span = document.getElementById('span');
+
+    function time() {
+      var d = new Date();
+      var s = d.getSeconds();
+      var m = d.getMinutes();
+      var h = d.getHours();
+      span.textContent = ("0" + h).substr(-2) + ":" + ("0" + m).substr(-2) + ":" + ("0" + s).substr(-2)
+    }
+  </script>
+</div>
+<style>
+.sidebar::-webkit-scrollbar {
+  width: 12px;     
+  display: none;          /* width of the entire scrollbar */
+}
+.sidebar {
+ 
+  overflow-y: scroll;
+  scrollbar-color: rgba(0, 0, 0, 0) rgba(0, 128, 0, 0);
+  scrollbar-width: thin;
+}
+
+  </style>

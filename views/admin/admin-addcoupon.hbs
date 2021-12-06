@@ -1,0 +1,251 @@
+<center>
+    <section class="col-sm-12 col-lg-12 col-md-12 ml-5 mt-5">
+        {{!-- <form action="" style="width: 70%;" method="POST" action="/admin/add-product"
+            enctype="multipart/form-data"> --}}
+
+
+            <a class="btn btn-success" id="addCouponButton" data-toggle="modal" data-target="#addcoupon">Add Coupon</a>
+
+            {{!-- Modal For adding coupon --}}
+            <div class="modal fade" id="addcoupon" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Add coupon</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="col-12">
+
+                                <form action="/admin/addcoupon" method="post" id="addCouponForm">
+                                    <div>
+                                        <label for="couponcode">Coupon Code</label>
+                                        <span id="nameExistError" style="color: red; display: none;">A coupon with same
+                                            code already exist</span>
+                                        <input id="couponcode" class="form-control" name="couponcode" type="text" placeholder="Enter The coupon code" style="display: block;" value="" onblur="checkCoupon()">
+
+                                        <label for="coupondiscount" class="mt-4">Coupon Discount</label>
+
+                                        <input id="coupondiscount" class="form-control " name="coupondiscount"
+                                            type="text" placeholder="Enter The coupon discount" style="display: block;">
+
+                                        <label for="coupoonExpiry" class="mt-4">Coupon Expiry</label>
+                                        <input id="coupoonExpiry" class="form-control" name="couponexpiry" type="date">
+
+                                        <button type="submit" id="addCouponBtn" class="btn btn-success mt-5"> Add coupon</button>
+                                    </div>
+
+                                    <button type="button" class="btn btn-secondary mt-5"
+                                        data-dismiss="modal">Close</button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{!-- Modal ends --}}
+            <table style="width: 70%;" cellpadding="0" cellspacing="0" border="0" style="margin-top: 19px;"
+                class="datatable table table-striped table-bordered" id="myTable">
+                <thead>
+                    <tr>
+                        <th><strong>Sl. No</strong></th>
+                        <th><strong>Coupon Code</strong></th>
+                        <th><strong> Discount (%)</strong></th>
+                        <th><strong> Date</strong></th>
+                        <th><strong>Expiry Date</strong></th>
+                        <th><strong> Action</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each allCoupons}}
+                    <tr class="gradeX">
+                        <td>{{add @index '1'}}</td>
+                        <td>{{this.couponcode}}</td>
+                        <td>{{this.coupondiscount}}%</td>
+                        <td>{{this.coupondate}}</td>
+                        <td>{{this.couponexpiry}}</td>
+                        <td>
+                            <a href="" data-toggle="modal" data-target="#editcoupon" onclick="addValues('{{this._id}}')"
+                                class="btn btn-success">Edit</a>
+
+
+
+
+                            {{!-- Modal For editing coupon --}}
+                            <div class="modal hide fade" id="editcoupon" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Add coupon</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="col-12">
+
+                                                <form action="/admin/editcoupon" method="post" id="editCouponForm">
+
+                                                    <input type="hidden" value="" id="couponId" name="couponId">
+
+                                                    <label for="couponcode">Coupon Code</label>
+
+                                                    <input id="editcouponcode" value="" class="form-control"
+                                                        name="couponcode" type="text"
+                                                        placeholder="Enter The coupon code" style="display: block;">
+
+                                                    <label for="coupondiscount" class="mt-4">Coupon Discount</label>
+
+                                                    <input id="editcoupondiscount" value="" class="form-control "
+                                                        name="coupondiscount" type="text"
+                                                        placeholder="Enter The coupon discount" style="display: block;">
+
+                                                    <label for="coupondiscount" class="mt-4">Coupon Expiry</label>
+
+                                                    <input id="editcoupoonExpiry" value="" class="form-control "
+                                                        name="couponexpiry" type="date" style="display: block;">
+
+                                                    <button type="submit" class="btn btn-success mt-5"> Edit
+                                                        coupon</button>
+
+                                                    <button type="button" class="btn btn-secondary mt-5"
+                                                        data-dismiss="modal">Close</button>
+
+
+
+                                                </form>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{!-- Modal edit ends --}}
+
+
+                            <a data-toggle="modal" data-target="#{{this._id}}" class="btn btn-danger">Delete</a>
+
+                            {{!-- Modal For delete coupon --}}
+                            <div class="modal hide fade" id="{{this._id}}" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Delete coupon</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h5>Are You sure ?</h5>
+                                            <div class="col-12">
+                                                <a href="/admin/deletecoupon/{{this._id}}"
+                                                    class="btn btn-success mt-5">Delete</a>
+                                                <button type="button" class="btn btn-secondary mt-5"
+                                                    data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{!-- Modal Delete ends --}}
+                        </td>
+                    </tr>
+                    {{/each}}
+
+                </tbody>
+            </table>
+            {{!--
+        </form> --}}
+    </section>
+</center>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
+
+<script>
+    function checkCoupon() {        
+        couponCode = $('#couponcode').value
+        console.log(couponcode)
+
+        $.ajax({
+            url: '/admin/checkcouponcode/' + couponcode,
+            method: 'get',
+            success: (response) => {
+                console.log("the response is  : ", response)
+                if (response) {
+                    document.getElementById('nameExistError').style.display = 'block'
+                    document.getElementById('addCouponBtn').disabled = true
+                } else {
+                    document.getElementById('nameExistError').style.display = 'none'
+                    document.getElementById('addCouponBtn').disabled = false
+                }
+            }
+        })
+    }
+
+    $(document).ready(function () {
+        document.getElementById("coupoonExpiry").min = new Date().toISOString().split("T")[0]
+        document.getElementById('editcoupoonExpiry').min = new Date().toISOString().split("T")[0]
+    })
+
+    $(document).ready(function () {
+
+        $("#addCouponForm").validate({
+
+            rules: {
+                couponcode: {
+                    required: true
+                },
+                coupondiscount: {
+                    reqiured: true,
+                    digits: true,
+                    maxlength: 2
+                }
+            }
+
+        })
+    })
+
+</script>
+
+<script>
+
+    $(document).ready(function () {
+        $('#editCouponForm').validate({
+            rules: {
+                couponcode: {
+                    required: true
+                },
+                coupondiscount: {
+                    reqiured: true,
+                    digits: true,
+                    maxlength: 2,
+                }
+            }
+        })
+    })
+</script>
+
+
+<script>
+    function addValues(couponId) {
+        $.ajax({
+            url: '/admin/editcoupon/' + couponId,
+            method: 'get',
+            success: (coupon) => {
+
+                document.getElementById('editcouponcode').value = coupon.couponcode
+                document.getElementById('editcoupondiscount').value = coupon.coupondiscount
+                document.getElementById('couponId').value = coupon._id
+            }
+        })
+    }
+</script>

@@ -1,0 +1,162 @@
+<div id="wrap" class="container-fluid main-panel mt-5 text-center" >
+    <div class="row text-center">
+        <div class="col-lg-6 col-md-12">
+            <div class="card">
+                <div class="card-header card-header-primary">
+                    <h4 class="card-title">Buynow Order</h4>
+                    <p class="card-category">Details of the user and delivery</p>
+                </div>
+                <div class="card-body table-responsive">
+                    <table class="table table-hover text-center">
+                        <tr>
+                            <th>Order Date : {{buynowOrders.orderDate}}</th>
+                        </tr>
+                        <tr>
+                            <th>User Name : {{buynowOrders.delivery.firstname}}</th>
+                        </tr>
+                       
+                        <tr>
+                            <th>Destination : {{buynowOrders.delivery.pincode}}</th>
+                        </tr>
+                        <tr>
+                            <th>Payment : {{buynowOrders.payment_method}}</th>
+                        </tr>
+                        
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+    <div class="">
+        <div class="card">
+            <div class="card-header card-header-primary">
+                <h4 class="card-title ">Buynow Order</h4>
+                <p class="card-category">Take action on any user </p>
+            </div>
+        <div class="card-body">
+
+        <table cellpadding="0" cellspacing="0" border="0" id="buyNowTable" class="datatable table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th><strong>Product ID</strong></th>
+                    <th> <strong>Product Price</strong> </th>
+                    <th> <strong>Status</strong></th>
+                    <th> <strong>Total</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+               
+
+                <tr class="gradeX">
+                    
+                    
+                    <td>{{buynowOrders.productId}}</td>
+                    
+                    <td>{{buynowOrders.totalAmount}}</td>
+
+                    {{#eq buynowOrders.status 'pending'}}
+                    <td>
+                        <select name="status" id="{{buynowOrders.productId}}" class="dropdown btn btn-success dropdown-toggle"
+                            onchange="updateStatus('{{buynowOrders._id}}','{{buynowOrders.userId}}','{{buynowOrders.productId}}')">
+                            <option value="pending" selected>Pending<i class="bi bi-chevron-down"></i></option>
+                            <option value="placed">Placed</option>
+                            <option value="shipped">Shipped</option>
+                            <option value="delivered">Delivered</option>
+                            <option value="cancel">Cancel</option>
+                        </select>
+                    </td>
+                    {{/eq}}
+
+                    {{#eq buynowOrders.status 'placed'}}
+                    <td>
+                        <select name="status" id="{{buynowOrders.productId}}" class="dropdown btn btn-success dropdown-toggle"
+                            onchange="updateStatus('{{buynowOrders._id}}','{{buynowOrders.userId}}','{{buynowOrders.productId}}')">
+                            <option value="placed" selected>Placed<i class="bi bi-chevron-down"></i></option>
+                            <option value="shipped">Shipped</option>
+                            <option value="delivered">Delivered</option>
+                            <option value="cancel">Cancel</option>
+                        </select>
+                    </td>
+                    {{/eq}}
+
+                    {{#eq buynowOrders.status 'shipped'}}
+                    <td>
+                        <select name="status" id="{{buynowOrders.productId}}" class="dropdown btn btn-success dropdown-toggle"
+                            onchange="updateStatus('{{buynowOrders._id}}','{{buynowOrders.userId}}','{{buynowOrders.productId}}')">
+                            {{!-- <option value="placed">Placed</option> --}}
+                            <option value="shipped" selected>Shipped<i class="bi bi-chevron-down"></i></option>
+                            <option value="delivered">Delivered</option>  
+                            <option value="cancel">Cancel</option>
+
+                        </select>
+                    </td>
+                    {{/eq}}
+
+                    {{#eq buynowOrders.status 'delivered'}}
+                    <td>
+                        <select name="status" id="{{buynowOrders.productId}}" class="dropdown btn btn-success dropdown-toggle"
+                            onchange="updateStatus('{{buynowOrders._id}}','{{buynowOrders.userId}}','{{buynowOrders.productId}}')">
+                            <option value="delivered" selected>Delivered<i class="bi bi-chevron-down"></i></option>
+                            
+                        </select>
+                    </td>
+                    {{/eq}}
+
+                    {{#eq buynowOrders.status 'cancel'}}
+                    <td>
+                        <select name="status" id="{{buynowOrders.productId}}" class="dropdown btn btn-success dropdown-toggle"
+                            onchange="updateStatus('{{buynowOrders._id}}','{{buynowOrders.userId}}','{{buynowOrders.productId}}')">
+                            <option value="cancel" selected>Cancelled</option>
+                        </select>
+                    </td>
+                    {{/eq}}
+
+                    
+                    
+                    <td>{{buynowOrders.totalAmount}}</td>
+                </tr>
+
+
+
+             
+        </table>
+        </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+
+        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+        
+        <script>
+            $(document).ready(function () {
+                $('#buyNowTable').DataTable();
+            });
+        </script>
+
+<script>
+    function updateStatus(orderId, userId, proId) {
+
+        var status = document.getElementById(proId).value
+    
+        $.ajax({
+            url: '/admin/updateorderstatusofbuynow/',
+            data: {
+                orderId: orderId,
+                userId: userId,
+                status: status,
+                proId: proId,
+            },
+            method: 'post',
+            success: (response) => {
+                document.getElementById(proId).value = status
+                location.reload();
+            }
+        })
+    }
+</script>

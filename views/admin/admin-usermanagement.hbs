@@ -1,0 +1,85 @@
+<div id="wrap" class="container-fluid main-panel mt-5">
+	<div class="col-md-12">
+		<div class="">
+			<div class="card">
+				<div class="card-header card-header-primary">
+					<h4 class="card-title ">User Management</h4>
+					<p class="card-category">Take action on any user </p>
+				</div>
+				<div class="card-body">
+					{{!-- <a href="/admin/add-product" class="btn btn-success mb-3" style="float: right;">Add
+						product</a>
+					--}}
+					<table cellpadding="0" cellspacing="0" border="0"
+						class="datatable table table-striped table-bordered" id="mineTable">
+						<thead>
+							<tr>
+								<th><strong>Sl. No</strong></th>
+								<th><strong>User Name</strong></th>
+								<th><strong> Email</strong></th>
+								<th> <strong>Mobile</strong> </th>
+								<th> <strong>Action</strong></th>
+
+
+							</tr>
+						</thead>
+						<tbody>
+							{{#each allUsers}}
+							<tr class="gradeX">
+								<td>{{add @index '1'}}</td>
+								<td>{{this.username}}</td>
+								<td>{{this.email}}</td>
+								<td>{{this.mobile}}</td>
+
+								<td class="center">
+									{{#eq this.block 'true'}}
+									<a href="/admin/unblockuser/{{this._id}}" class="btn btn-success"
+										onclick="return confirm('Are you sure you want to unblock : {{this.username}}')">Unblock</a>
+									{{else}}
+									<a  class="btn btn-danger" onclick="blockUserCnfrm('{{this._id}}')">Block</a>
+									{{/eq}}
+
+										
+									<script>
+										function blockUserCnfrm(userId){
+											swal({
+												title: "Are you sure?",
+												text: "Are you sure to block the user ?",
+												icon: "warning",
+												buttons: true,
+												dangerMode: true,
+											})
+												.then((willDelete) => {
+													if (willDelete) {
+														$.ajax({
+															url : '/admin/blockuser/'+userId,
+															method : 'get',
+															success  : ()=>{
+																location.reload()
+															}
+														})
+													}
+												});
+										}
+										
+									</script>
+								</td>
+							</tr>
+							{{/each}}
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+	crossorigin="anonymous"></>
+			<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+
+<script>
+							 $(document).ready(function () {
+								 $('#mineTable').DataTable();
+	});
+</script>

@@ -1,0 +1,291 @@
+{{! ADvertisesment Top Starts }}
+<section id="hero" class="hero">
+
+  <div id="hero-slider" class="hero-slider">
+
+    {{#each ads}}
+    {{#eq this.adFor 'product'}}
+    {{else}}
+    <a href="/maincategoryproductsdisplay/{{this.adForOfferCat}}">
+      <div class="slide">
+        <div class="bg-section">
+          <img src="/ads/{{this._id}}__1.jpg" alt="Background" height="auto" width="100%"/>
+        </div>
+      </div>
+    </a>
+    {{/eq}}
+    {{/each}}
+
+  </div>
+
+</section>
+{{! ADvertisesment Top Ends }}
+<section class="proAd" style=" padding-bottom: 0; margin-bottom: -40px; overflow: hidden;">
+  <div class="container">
+    <div class="row product-boxes">
+
+
+      {{#each ads}}
+      {{#eq this.adFor 'product'}}
+      <div class="col-xs-12 col-sm-4 col-md-4 product-box">
+        <a href="/productview/{{this.adForProduct}}">
+          <div class="product-img" style="border-radius: 20px;">
+            <img src="/ads/{{this._id}}__1.jpg" alt="Product"  style="height: 200px;margin-top: 5px;" />
+          </div>
+        </a>
+      </div>
+      {{/eq}}
+      {{/each}}
+
+
+    </div>
+  </div>
+</section>
+
+{{!-- Advertisements new arrival --}}
+<section id="shopgrid" class="shop shop-grid shop-items"
+  style="padding-top: 100px;padding-bottom: 0;margin-bottom: -40px; overflow: hidden;">
+  <div class="container heading">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12">
+        {{! <p class="subheading">we get</p> }}
+        <h2><i class="bi bi-chevron-double-right"></i> New Arrivals</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+
+      {{#each newArrivals}}
+      <div class="col-xs-12 col-sm-6 col-md-4 product">
+
+        <div class="product-img">
+
+          {{!-- To display Sold out on the product if the quatity is 0 --}}
+          {{#lte this.productquantity '0'}}
+          <img id="" src="/uploads/{{this._id}}__1.jpg" alt="Product" style="height: 430px;" />
+          <img src="/images/Sold Out.png" alt="" style="display: inline; top: -440px; margin-bottom: -270px;">
+          <input type="text" hidden class="product-id" value="{{this._id}}">
+          {{else}}
+          <img src="/uploads/{{this._id}}__1.jpg" alt="Product" style="height: 430px;" />
+          <input type="text" hidden class="product-id" value="{{this._id}}">
+          {{/lte}}
+
+          <div class="product-hover " style="cursor: pointer;">
+            <div class="product-action">
+              {{!-- To hide and display the add to cart and buy now related to the quantity --}}
+              {{#gt this.productquantity '0'}}
+              
+              <a id="" class="btn btn-primary payment">Buy Now</a>
+              
+              {{else}}
+              <a id="" class="btn btn-primary payment" style="display: none;">Buy Now</a>
+              {{/gt}}
+              {{#gt this.productquantity '0'}}
+
+              {{#if ../logStatus}}
+              {{#hello ../items this._id this.productprice this.productname}}
+              {{/hello}}
+              
+                {{else}}
+                    <a href="/login?id={{this._id}}&price={{this.productprice}}&name={{this.productname}}" class="btn btn-primary add-to-cart">Add To Cart</a>
+              {{/if}}
+
+              {{/gt}}
+            </div>
+          </div>
+
+        </div>
+
+        <div class="product-bio">
+          <div class="prodcut-cat">
+            <a href="/getproductsonprobrand/{{this.productbrand}}">{{this.productbrand}}</a>
+          </div>
+
+          <div class="prodcut-title">
+            <h3>
+              <a href="/productview/{{this._id}}">{{this.productname}}</a>
+            </h3>
+          </div>
+
+          <div class="product-price">
+
+            <span class="symbole">₹ </span><span>{{this.productprice}}</span>
+
+          </div>
+          {{#if this.offer}}
+          <span>MRP : ₹<s>{{this.productofferprice}}</s><span style="color: green;"> {{this.offer}} % OFF</span></span>
+          {{/if}}
+        </div>
+      </div>
+      {{/each}}
+
+    </div>
+  </div>
+</section>
+
+
+{{!-- DOM Manipulation to Go to item details page --}}
+<script>
+  window.onclick = (event) => {
+    var payment = document.getElementsByClassName('payment')
+    var addToCart = document.getElementsByClassName('add-to-cart')
+    var hover = document.getElementsByClassName('product-hover')
+    var product_id = document.getElementsByClassName('product-id')
+
+
+
+    for (var i = 0; i < hover.length; i++) {
+
+      if (event.target === payment[i]) {
+        location.href = '/checkoutbuynow/' + product_id[i].value
+        break;
+      } else if (event.target === addToCart[i]) {
+        break;
+      }
+      else if (event.target === hover[i]) {
+        location.href = "/productview/" + product_id[i].value
+        break;
+      }
+    }
+
+
+  }
+</script>
+{{!-- End --}}
+
+<section id="clients" class="clients bg-gray">
+  <div class="container heading">
+    <div class="row">
+      <div class="col-xs-6 col-sm-12 col-md-12">
+        <p class="subheading">Awesome</p>
+        <h2>Our Brands</h2>
+      </div>
+    </div>
+    {{! Client Description }}
+    <div class="row heading-desc">
+      <div class="dropdown" style="display: inline; float: right; margin-right: 5px;">
+        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="true">
+          Shop by Model
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu myScroll" aria-labelledby="dropdownMenu1">
+
+          {{#each allBikeBrands}}
+          {{#each this.models}}
+          <li><a href="/getproductsonbikemodel/{{this.bikemodels}}">{{this.bikemodels}}</a></li>
+          {{/each}}
+          {{/each}}
+
+        </ul>
+      </div>
+      <div class="dropdown" style="display: inline; float: right; margin-right: 5px;">
+        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="true">
+          Shop by Brand
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu myScroll" aria-labelledby="dropdownMenu1">
+          {{#each allBikeBrands}}
+          <li><a href="/getproductsonbikebrand/{{this.bikeBrand}}">{{this.bikeBrand}}</a></li>
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+  </div>
+  {{! Client Description End}}
+
+  {{! Client Section }}
+  <section class="client" style="margin-top: -60px;">
+    <div class="container">
+      <div class="clients-bg" style="height: 150px;">
+        <div class="row">
+          <div class="col-xs-12 colsm-12 col-md-12 client-carousel">
+
+            {{#each allBikeBrands}}
+            <div class="client">
+              <a href="/bikemodel/{{this._id}}">
+                <img src="/bike brand logos/{{this._id}}__1.jpg" alt="client" style="height: 100px;" />
+                <H6 style="justify-content: last baseline;margin-top: 8px;">{{this.bikeBrand}}</H6>
+              </a>
+            </div>
+            {{/each}}
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</section>
+{{! Client section End }}
+
+{{! Shop by category }}
+<section id="featuredItems client" class="shop" style="margin-top: 10px; padding-top: 8px;">
+  <div class="container heading">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12">
+        <p class="subheading">LET'S SEE WHAT YOU ARE LOOKING FOR</p>
+        <h2>SHOP BY CATEGORY</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <ul style="width:100%" class="nav  nav-tabs navbar-nav navbar-left">
+      {{#each allCategories}}
+
+      {{#eq @index 0}}
+      <li class="active">
+        {{else}}
+      <li>
+      {{/eq}}
+        <a id="catNav" style="color:black" data-toggle="tab" href="#{{this._id}}">{{this.mainCategory}}</a>
+      </li>
+      {{/each}}
+    </ul>
+
+    <div class="tab-content">
+      {{#each allCategories}}
+      {{#eq @index 0}}
+      <div class="tab-pane active" id="{{this._id}}">
+        {{else}}
+        <div class="tab-pane" id="{{this._id}}">
+          {{/eq}}
+
+        <div class="row product-boxes">
+
+          {{#each this.SubCategory}}
+          <div class="col-md-3 product-box" style="margin-top: 15px;">
+
+            <a href="/getallproductsofsubcategory/{{this.subCat}}">
+
+              <div class="product-img" style="display:flex; justify-content:center;">
+                <img src="subCat Logo/{{this.id}}__1.jpg" style="height:150px;width:230px" alt="Product" />
+              </div>
+
+              <div class="text-center" style="margin-top:12px;">
+                <h6>{{this.subCat}}</h6>
+              </div>
+
+            </a>
+          </div>
+          {{/each}}
+        </div>
+      </div>
+
+      {{/each}}
+
+
+    </div>
+  </div>
+</section>
+
+<style>
+  #catNav {
+    border: 0px solid #ddd !important;
+  }
+</style>
+

@@ -1,0 +1,83 @@
+<section id="page-title" class="page-title">
+    <div class="my-account-area">
+        <div class="container">
+            {{>user-ordersnav}}
+            <div class="row">
+                <a href="/addaddress" class="btn btn-secondary" style="margin-bottom: 30px;display: block;"><span><i
+                            class="bi bi-plus-lg"></i> Add address</span></a>
+
+                {{#if address}}
+                {{#each address}}
+                <div class="col-sm-6 col-md-4 col-xl-12">
+                    <div class="card-body">
+                        <div
+                            style="display: inline-block;background-color: hsl(0, 0%, 71%);margin-bottom: 10px;border-radius: 8px;width: 50px;">
+                            <span style="color: #5e5e5e;padding-left: 5px;">{{this.addresstype}}</span>
+                        </div>
+                        <div class="dropdown" style="display: inline;width: 100%;">
+
+                            <a class="dropdown-toggle" type="button" id="dropdownMenuButton"
+                                style="display: inline;float: right;" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false"> <i class="bi bi-three-dots-vertical"></i>
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <center>
+                                    <a class="dropdown-item" onclick="editAdd('{{this._id}}')"
+                                        href="/editaddress/{{this._id}}">Edit</a>
+                                    <hr>
+                                    <a class="dropdown-item" onclick="deleteAdd('{{this._id}}')">Delete</a>
+
+                                  
+                                    <!-- Modal -->
+
+                                    {{!-- Modal end --}}
+                                </center>
+                            </div>
+                        </div>
+                        <h5 class="card-title">{{this.firstname}} {{this.lastname}}</h5>
+
+
+
+                        <p class="card-text">{{this.address1}}</p>
+                        <p class="card-text">{{this.address2}}</p>
+                        <p class="card-text">{{this.state}}</p>
+                        <p class="card-text">{{this.pincode}}</p>
+                        <p class="card-text">{{this.phone}}</p>
+
+                    </div>
+                </div>
+                {{/each}}
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<style>
+    .dropdown-menu {
+        position: relative;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        display: none;
+        min-width: 115px;
+        padding: 15px 0;
+        margin: 2px 0 0;
+        font-size: 14px;
+        text-align: left;
+        list-style: none;
+        background-color: rgba(255, 255, 255, 0.041);
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        border: 1px solid #ccc;
+        border: 1px solid rgba(0, 0, 0, .15);
+        border-radius: 4px;
+        -webkit-box-shadow: 0 6px 12px rgb(0 0 0 / 18%);
+        box-shadow: 0 6px 12px rgb(0 0 0 / 18%);
+        float: right;
+    }
+</style>
+

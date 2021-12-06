@@ -1,0 +1,76 @@
+{{!-- User Login page --}}
+<center>
+    <section id="signIn" class="sign ">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12  col-sm-12  col-md-12 mysign" style="background-color: rgba(255, 0, 0, 0);">
+                  <div class="modal-body" style="background-color: rgba(0, 0, 255, 0);">
+                    
+                    {{!-- <p>Welcome Back</p> --}}
+                    <img src="/images/logo.png" alt="" class="myImg1">
+                    <h6>Login Area</h6>
+                    <div class="sign-form" style="width: 50%;">
+                      {{#if block}}
+                        <span style="color: red;margin-bottom: 5px;">You have beign blocked by the admin</span><br>
+                      {{/if}}
+                      {{#if emailError}}
+                            <span style="color: red;margin-bottom: 5px;">Incorrect username or password !</span><br>
+                          {{/if}}
+
+                          {{#if passError}}
+                            <span style="color: red;">Incorrect Password</span>
+                          {{/if}}
+                          {{#if reset}}
+                            <span style="color: rgb(0, 114, 6);">{{reset}}</span>
+                          {{/if}}
+
+                          {{#if newSignUpSuccess}}
+                            <span style="color: rgb(0, 114, 6);">You have succesfully signed up please login to continue !</span>
+                          {{/if}}
+
+                        {{!-- Signin Form --}}
+                      <form class="mb-0 myLoginForm" action="/login" method="POST" id="loginform">
+                        <div class="form-group">
+                          <input type="text" class="form-control " id="username" name="username" placeholder="User Name">
+                        </div>
+                        <div class="form-group">
+                          <input type="password" class="form-control" id="pwd" name="pwd" placeholder="Password">
+                        </div>
+                          
+                        <div class="pull-right lost-pass">
+                          <a href="/forgotpassword">Forget Password?</a>
+                        </div>
+                        <div class="pull-left lost-pass">
+                          <a href="/signinotp">Sign in using OTP</a>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                      </form>
+                      <div class="form-links text-center">
+                        <a href="/signup">Create New Account</a>
+                      </div>
+                    </div>
+                  </div>
+         </div>
+        </div>
+      </div>
+    </section>
+    </center>
+
+  <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      $('#loginform').validate({
+        rules:{
+          username : {
+            required : true,
+            minlenght : 5,
+          },
+          pwd : {
+            required : true,
+            minlength : 6,
+          } 
+        }
+      })
+    })
+  </script>
+

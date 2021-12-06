@@ -1,0 +1,133 @@
+<!-- wishlist-table-area-start --><div class="container" style="margin-top: 7em">
+    <div class="row mt-5">
+
+        {{#if wishProducts}}
+        {{#each wishProducts}}
+        <div class="card col-md-6">
+            <div class="imgBx">
+                <img src="/uploads/{{this.item}}__1.jpg" alt="" width="400px">
+            </div>
+                
+                <hr>
+            <div class="contentBx">
+                <h2>{{this.proName}}</h2>
+                <p>Price : ₹ {{this.proPrice}}</p>
+                {{#gt this.quantity '0'}}
+                <p class="card-text">Stock : Available</p>
+                {{else}}
+                <p class="card-text">Stock : Sold Out</p>
+                {{/gt}}
+
+                <a onclick="removeFromWish('{{this.item}}')"><span>Delete</span></a>
+            </div>
+        </div>
+        {{/each}}
+        {{else}}
+        <center>
+            <h3 class="text-center mb-3" style="color: red;margin-bottom: 30px;">Wish Some Products to see here </h3>
+            <img src="/images/Wishlist Empty.svg" style="margin-bottom: 20px;" height="300px" alt="">
+        </center>
+        {{/if}}
+    </div>
+</div>
+
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900&display=swap');
+
+
+    .ad2cart {
+        color: white;
+    }
+
+    .container .card {
+        width: 320px;
+        margin: 20px;
+        padding: 40px 30px;
+        background: #b1b1b117;
+        border-radius: 40px;
+        box-shadow: -6px -6px 20px rgba(255, 255, 255, 1), 6px 6px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .container .card:hover {
+        box-shadow: inset -6px -6px 20px rgba(255, 255, 255, 0.5), inset 6px 6px 20px rgba(0, 0, 0, 0.05);
+    }
+
+    .container .card .imgBx {
+        position: relative;
+        text-align: center;
+    }
+
+    .container .card .imgBx img {
+        max-width: 223px;
+    }
+
+    .container .card .contentBx {
+        position: relative;
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .container .card .contentBx h2 {
+        color: #d61818;
+        font-weight: 700;
+        font-size: 1.4em;
+        letter-spacing: 2px;
+    }
+
+    .container .card .contentBx p {
+        color: #32a3b1;
+    }
+
+    .container .card .contentBx a {
+        display: inline-block;
+        padding: 10px 20px;
+        margin-top: 15px;
+        border-radius: 40px;
+        color: #32a3b1;
+        font-size: 16px;
+        text-decoration: none;
+        box-shadow: -4px -4px 15px rgba(255, 255, 255, 1), 4px 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .container .card .contentBx a:hover {
+        box-shadow: inset -4px -4px 10px rgba(255, 255, 255, 0.5), inset 4px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .container .card a:hover span {
+        display: block;
+        transform: scale(0.98);
+        color: brown;
+    }
+
+    .container .card:hover .imgBx,
+    .container .card:hover .contentBx {
+        transform: scale(0.98);
+    }
+</style>
+
+
+    <script>
+        function removeFromWish(proId) {
+            swal({
+                title: "Are you sure?",
+                text: "Are you sure you want to delete the product from wishlist",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                    if (willDelete) {
+                          $.ajax({
+                            url: '/removefromwish/' + proId,
+                            method: 'get',
+                            success: (response) => {
+                                sessionStorage.setItem('wishremovereloading','true')
+                                document.location.reload()
+                            }
+                        })
+                    } 
+                });
+          
+        }
+    </script>
+
+   

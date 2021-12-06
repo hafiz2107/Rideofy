@@ -1,0 +1,867 @@
+<section id="page-title" class="page-title">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <h3 class="text-center" style="letter-spacing: 5px;">CHECKOUT</h3>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section style="margin-top: 30px;padding-top: 50px">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12" style="margin-bottom: 10px ;">
+                <div class="billing-address">
+                    {{#if addresses.address}}
+                    <h5 class="checkout-box-title">SAVED ADDRESS</h5>
+
+                    <div class="row checkout-billing-adress-box">
+                        {{#each addresses.address}}
+
+                        <div class="col-md-2">
+                            <dl>
+                                <dt>{{this.firstname}} {{this.lastname}}</dt>
+                                <dd>{{this.address1}}</dd>
+                                <dd>{{this.address2}}</dd>
+                                <dd>{{this.phone}}</dd>
+                                <dd>
+                                    <label for="useaddress" style="color: #047bd5;">Use Address</label>
+                                    <input type="radio" name="use" id="{{this._id}}"
+                                        onclick="changeAddress('{{this.firstname}}','{{this.lastname}}','{{this.address1}}','{{this.address2}}','{{this.country}}','{{this.state}}','{{this.pincode}}','{{this.phone}}','{{this.second_mobile}}','{{this.housename}}','{{this.city}}','{{this._id}}')">
+                                </dd>
+                                <br>
+                            </dl>
+                        </div>
+
+                        {{/each}}
+                    </div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-sm-12 col-xs-12">
+                <div class="billing-address">
+                    <h5 class="checkout-box-title">NEW ADDRESS</h5>
+                    <div class="checkout-billing-adress-box">
+
+
+                        <form action="" id="checkoutbuynow-form">
+
+                            <div class="billing-address-input clearfix">
+                                <label>FIRST NAME *</label>
+                                <input type="text" name="firstname" id="firstname">
+                            </div>
+
+
+                            <div class="billing-address-input clearfix">
+                                <label>LAST NAME *</label>
+                                <input type="text" name="lastname" id="lastname">
+                            </div>
+
+                            <div class="billing-address-input clearfix">
+                                <label>COMPANY / HOUSE NAME *</label>
+                                <input type="text" name="housename" id="housename">
+                            </div>
+
+                            <div class="billing-address-input clearfix">
+                                <label>ADDRESS *</label>
+                                <input type="text" placeholder="Street Address" name="address1" id="address1">
+                                <input type="text" placeholder="Fashin, suite, unite ect (optinal)" name="address2"
+                                    id="address2">
+                            </div>
+
+                            <div class="billing-address-input clearfix">
+                                <label>TOWN / CITY *</label>
+                                <input type="text" name="city" id="city">
+                            </div>
+
+                            <div class="billing-address-input clearfix">
+                                <label>Country</label>
+                                <select id="country" name="country">
+                                    <option>select country</option>
+                                </select>
+                            </div>
+                            <div class="billing-address-input clearfix">
+                                <label for="state">State</label>
+                                <span id="state-code">
+                                    <select name="state" id="state">
+                                        {{!-- States --}}
+                                    </select>
+                                </span>
+                            </div>
+
+
+                            <div class="billing-address-input clearfix">
+                                <label>POSTCODE / ZIP *</label>
+                                <input type="text" name="pincode" id="pincode">
+                            </div>
+
+                            <div class="billing-address-input clearfix" style="margin-bottom:0px">
+                                <label>PHONE *</label>
+                                <input type="text" name="phone" id="phone">
+                            </div>
+
+                            <label for="useRegPh" style="margin-bottom: 20px;">Use Registered Phone</label>
+                            <input type="checkbox" id="useRegPh" onclick="useRegPhone()">
+
+                            <div class="billing-address-input clearfix">
+                                <label>ALTERNATE PHONE *</label>
+                                <input type="text" name="second_mobile" id="second_mobile">
+                            </div>
+
+                            <br>
+
+                            <div class="billing-address-input clearfix">
+                                <label id="saveaddresslabel" for=""> Save Address </label>
+                                <input name="saveaddress" style="margin-left: 5px;" type="checkbox" id="saveaddress">
+                            </div>
+                            <div id="addresssuccess" style="display: none;">
+                                <p style="color: green;">Address saved successfully</p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+            {{!-- Coupon --}}
+            <div class="col-md-4 col-sm-12 col-xs-12">
+                <div class="promotional-code-box">
+                    <h5 class="checkout-box-title">COUPON CODE</h5>
+                    <div class="pcb-content">
+                        <p id="couponEnterSuccess">Enter your coupon code if you have one</p>
+
+                        <div class="pcb-cuppon-input clearfix">
+                            <input type="text" placeholder="Coupon code" id="coupon" name="coupon">
+                            <a onclick="checkCoupon1()" class="checkout-page-button hvr-bs btn btn-primary">Apply</a>
+                        </div>
+
+                    </div>
+                </div>
+                {{!-- Coupon ends --}}
+
+
+                <div class="your-order-box">
+                    <h5 class="checkout-box-title">YOUR ORDER</h5>
+                    <div class="yob-content">
+                        <ul>
+                            <li class="clearfix">Cart Subtotal <span style="font-weight: bolder;font-size: 20px;">₹
+                                    {{total}}</span></li>
+                            <li class="clearfix">Discount <span>₹<span id="discount">0</span></span></li>
+                            {{!-- <li class="order-total clearfix">Order Total <span>₹ {{total}}</span></li> --}}
+
+                            <li class="order-total clearfix">Order Total <span>₹ <span id="orderTotal">{{total}}</span>
+                                </span>
+                                <input type="hidden" name="totalAmount" id="productprice" value="">
+                                <input type="hidden" id="actualPrice" value="{{total}}">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="promotional-code-box">
+                    <h5 class="checkout-box-title">PAYMENT METHOD</h5>
+                    <div class="pcb-content">
+                        <p>Select your payment method</p>
+                        <div class="pcb-cuppon-input clearfix">
+                            <input type="radio" name="payment_method" id="payementChoiceCod" value="COD"
+                                onclick="hideError()">
+                            <label
+                                style="margin-left: 10px;color: #000000;font-size: 14px;font-weight: 400;">COD</label>
+                        </div>
+                        <div class="pcb-cuppon-input clearfix">
+                            <input type="radio" name="payment_method" id="payementChoiceRazor" value="razorpay"
+                                onclick="hideError()">
+                            <label
+                                style="margin-left: 10px;color: #000000;font-size: 14px;font-weight: 400;">Razorpay</label><br>
+
+                            <input type="radio" name="payment_method" id="payementChoicePay" value="paypal"
+                                onclick="hideError()">
+                            <label
+                                style="margin-left: 10px;color: #000000;font-size: 14px;font-weight: 400;">PayPal</label>
+
+                            <div id="showPayError"></div>
+
+                        </div>
+                        <input type="hidden" id="user_id" value="{{user}}" name="userId">
+
+                        <div class="create-account-checkout-method">
+                            <div class="place-order">
+                                <button type="submit" class="checkout-page-button hvr-bs" id="placeOrderBtn">Place
+                                    order</button>
+                                <div id="paypal-button"></div>
+                            </div>
+                        </div>
+
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" id="usdToInr" value="">
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
+<script>
+    function useRegPhone() {
+        if (document.getElementById('useRegPh').checked == true) {
+            document.getElementById('phone').value = {{ theUser.mobile }}
+    }
+        else {
+        document.getElementById('phone').value = ''
+    }
+    }
+    function hideError() {
+        document.getElementById('showPayError').style.display = 'none';
+
+        if (document.getElementById('payementChoicePay').checked == false) {
+
+            document.getElementById('placeOrderBtn').style.display = 'block'
+            document.getElementById('paypal-button').style.display = 'none'
+            document.getElementById('paypal-button').innerHTML = ''
+        }
+
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#checkoutbuynow-form').validate({
+            rules: {
+                firstname: {
+                    required: true,
+                },
+                lastname: {
+                    required: true,
+                },
+                housename: {
+                    required: true,
+                },
+                address1: {
+                    required: true,
+                },
+                address2: {
+                    minlength: 10,
+                },
+                city: {
+                    required: true,
+                },
+                country: {
+                    required: true,
+                },
+                state: {
+                    required: true,
+                },
+                pincode: {
+                    required: true,
+                    minlength: 6
+                },
+                phone: {
+                    required: true,
+                    minlength: 10,
+                    maxlength: 10,
+                },
+                second_mobile: {
+                    minlength: 10,
+                    maxlength: 10,
+                },
+
+            },
+            submitHandler: function () {
+
+                if (document.getElementById('payementChoiceCod').checked == true || document.getElementById('payementChoiceRazor').checked == true || document.getElementById('payementChoicePay').checked == true) {
+
+
+                    if (document.getElementById('payementChoicePay').checked == true) {
+
+                        $.ajax({
+                            url: '/currencycoverter/' + document.getElementById('orderTotal').innerHTML,
+                            method: 'post',
+                            success: (total) => {
+                                console.log("the totoal is : ", total)
+                                document.getElementById('usdToInr').value = parseFloat(total).toFixed(2)
+                            }
+                        })
+                        document.getElementById('paypal-button').style.display = 'block'
+                        document.getElementById('placeOrderBtn').style.display = 'none'
+
+
+                        paypal.Button.render({
+                            // Configure environment
+                            env: 'sandbox',
+                            client: {
+                                sandbox: 'demo_sandbox_client_id',
+                                production: 'demo_production_client_id'
+                            },
+                            // Customize button (optional)
+                            locale: 'en_US',
+                            style: {
+                                size: 'small',
+                                color: 'blue',
+                                shape: 'rect',
+                            },
+                            // Enable Pay Now checkout flow (optional)
+                            commit: true,
+                            // Set up a payment
+                            payment: function (data, actions) {
+                                price = document.getElementById('usdToInr').value
+
+                                console.log("the totoal price is : ", price)
+
+                                return actions.payment.create({
+                                    transactions: [{
+                                        amount: {
+                                            total: parseFloat(price).toFixed(2),
+                                            currency: 'USD',
+                                        }
+                                    }]
+                                });
+                            },
+
+                            // Execute the payment
+
+                            onAuthorize: function (data, actions) {
+                                return actions.payment.execute().then(function () {
+
+
+                                    $.ajax({
+                                        url: '/checkout',
+                                        method: 'post',
+                                        data: $('#checkoutbuynow-form').serialize(),
+                                        success: (response) => {
+                                            if (response) {console.log("the repo : ",response)
+
+                                                location.href = '/orderconfirmed';
+                                            } else {
+                                                location.href = '/404';
+                                            }
+                                        }
+                                    })
+
+                                });
+
+                            }
+
+                        }, '#paypal-button');
+                    } else {
+                        document.getElementById('paypal-button').style.display = 'none'
+                        document.getElementById('placeOrderBtn').style.display = 'block'
+                        document.getElementById('paypal-button').innerHTML = ''
+
+
+                        $.ajax({
+                            url: '/checkout',
+                            method: 'post',
+                            data: $('#checkoutbuynow-form').serialize(),
+                            success: (response) => {
+
+                                if (response.codSuccess) {
+                                    location.href = '/orderconfirmed';
+                                } else {
+
+                                    razorpayPayment(response)
+                                }
+                            }
+                        })
+                    }
+
+                }
+                else {
+                    document.getElementById('showPayError').style.display = 'block'
+                    document.getElementById('showPayError').innerHTML = '<span style="color: red;">Please choose a payement method</span>'
+                }
+            }
+        })
+
+
+    })
+</script>
+
+<script>
+    function checkCoupon1() {
+        var couponCode = document.getElementById('coupon').value
+        var totalPrice = document.getElementById('orderTotal').innerHTML
+        var actualPrice = document.getElementById('actualPrice').value
+        var userId = document.getElementById('user_id').value
+
+        totalPrice = parseInt(totalPrice)
+        $.ajax({
+
+            url: '/checkcoupon/' + couponCode + '/' + actualPrice,
+            method: 'get',
+
+            success: ({ coupon }) => {
+
+                if (coupon.appliedCoupon) {
+                    document.getElementById('discount').innerHTML = '0';
+                    document.getElementById('orderTotal').innerHTML = actualPrice
+                    document.getElementById('productprice').value = actualPrice
+                    document.getElementById('couponEnterSuccess').style.display = 'block';
+                    swal("Coupon Alredy Applied", `Looks Like you have alredy applied the coupon`, "info");
+
+                }
+                else if (coupon.appliedCoupon == false) {
+                    //Calculating Discounted Price
+                    document.getElementById('orderTotal').innerHTML = coupon.priceAfterDiscount
+                    document.getElementById('productprice').value = coupon.priceAfterDiscount
+                    document.getElementById('discount').innerHTML = coupon.discount
+                    document.getElementById('couponEnterSuccess').style.display = 'none';
+                    swal("Coupon Applied", `You are eligible for ${coupon.coupon.coupondiscount} % discount`, "success");
+                }
+                else if (coupon.couponDontExist) {
+                    document.getElementById('discount').innerHTML = '0';
+                    document.getElementById('orderTotal').innerHTML = actualPrice
+                    document.getElementById('productprice').value = actualPrice
+                    document.getElementById('couponEnterSuccess').style.display = 'block';
+                    swal("Coupon Error", `Invalid Coupon entered`, "error");
+                } else {
+                    document.getElementById('coupon').style.backgroundColor = '#ff4747';
+                    document.getElementById('discount').innerHTML = '0';
+                    document.getElementById('orderTotal').innerHTML = actualPrice
+                    document.getElementById('productprice').value = actualPrice
+                }
+            }
+        })
+    }
+</script>
+
+<script>
+
+
+    function saveaddress2() {
+
+        firstname = document.getElementById('firstname').value
+        lastname = document.getElementById('lastname').value
+        housename = document.getElementById('housename').value
+        address1 = document.getElementById('address1').value
+        address2 = document.getElementById('address2').value
+        country = document.getElementById('country').value
+        pincode = document.getElementById('pincode').value
+        phone = document.getElementById('phone').value
+        second_mobile = document.getElementById('second_mobile').value
+        $.ajax({
+            url: '/addaddress',
+            data: {
+                firstname: firstname,
+                lastname: lastname,
+                housename: housename,
+                address1: address1,
+                address2: address2,
+                country: country,
+                pincode: pincode,
+                phone: phone,
+                second_mobile: second_mobile,
+                viaAjax: true,
+            },
+            method: 'post',
+            success: () => {
+                document.getElementById('saveaddress').style.display = 'none';
+                document.getElementById('saveaddresslabel').style.display = 'none';
+                document.getElementById('addresssuccess').style.display = 'block';
+            }
+        })
+    }
+</script>
+
+<script>
+    function changeAddress(firstname, lastname, address1, address2, country, state, pincode, phone, second_mobile, housename, city, id) {
+        if (document.getElementById(id).checked === true) {
+            document.getElementById('firstname').value = firstname
+            document.getElementById('lastname').value = lastname
+            document.getElementById('housename').value = housename
+            document.getElementById('address1').value = address1
+            document.getElementById('address2').value = address2
+            document.getElementById('country').value = country
+            document.getElementById('pincode').value = pincode
+            document.getElementById('phone').value = phone
+            document.getElementById('second_mobile').value = second_mobile
+            document.getElementById('city').value = city
+        } else {
+            document.getElementById('firstname').value = ''
+            document.getElementById('lastname').value = ''
+            document.getElementById('housename').value = ''
+            document.getElementById('address1').value = ''
+            document.getElementById('address2').value = ''
+            document.getElementById('country').value = ''
+            document.getElementById('pincode').value = ''
+            document.getElementById('phone').value = ''
+            document.getElementById('second_mobile').value = ''
+            document.getElementById('city').value = ''
+        }
+    }
+</script>
+
+<script>
+
+
+
+    function razorpayPayment(order) {
+        var options = {
+            "key": "rzp_test_6unoyhPHG9D97d", // Enter the Key ID generated from the Dashboard
+            "amount": order.response.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "Rideofy",
+            "description": "Test Transaction",
+            "image": "https://example.com/your_logo",
+            "order_id": order.response.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response) {
+                verifyPayement(response, order)
+            },
+            "prefill": {
+                "name": order.user.firstname,
+                "email": order.user.firstname + "@gmail.com",
+                "contact": order.user.phone
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#ff3849"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    }
+
+    function verifyPayement(payment, order) {
+        $.ajax({
+            url: '/verify-payment',
+            data: {
+                payment,
+                order
+            },
+            method: 'post',
+            success: (response) => {
+                if (response.status) {
+                    location.href = '/orderconfirmed'
+                } else {
+                    location.href = '/404'
+                }
+            }
+        })
+    }
+</script>
+
+
+<style>
+    .error {
+        color: red !important;
+    }
+
+    dt {
+        color: black;
+    }
+
+    .checkout-top {
+        margin-bottom: 23px;
+    }
+
+    .checkout-top p,
+    .checkout-top p a {
+        color: #000000;
+        font-family: "Montserrat", sans-serif;
+        font-size: 16px;
+    }
+
+    .checkout-top p a {
+        color: #d22a28;
+    }
+
+    .checkout-box-title {
+        border-bottom: 1px solid #ecedee;
+        color: #000000;
+        font-size: 18px;
+        font-weight: normal;
+        letter-spacing: 0;
+        padding: 16px 0;
+        text-align: center;
+    }
+
+    .billing-address {
+        background: #fff none repeat scroll 0 0;
+        border: 1px solid #ecedee;
+    }
+
+    .checkout-billing-adress-box {
+        padding: 21px 35px 50px 25px;
+    }
+
+    .billing-address-input {
+        margin-bottom: 20px;
+    }
+
+    .billing-address-input label {
+        color: #000000;
+        float: left;
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 0;
+    }
+
+    .billing-address-input select,
+    .billing-address-input input[type="text"] {
+        border: 0 none;
+        border-bottom: 1px solid #e5e5e5;
+        color: #000000;
+        float: right;
+        font-size: 14px;
+        font-weight: 300;
+        height: 40px;
+        padding: 0 10px;
+        width: 55%;
+    }
+
+    .billing-address-input select option {}
+
+    .cbab-create-account {
+        margin-bottom: 19px;
+    }
+
+    .cbab-create-account input[type="checkbox"] {}
+
+    .cbab-create-account label {
+        color: #000000;
+        font-size: 14px;
+        font-weight: 300;
+        letter-spacing: 0;
+        line-height: 16px;
+        margin: 0;
+    }
+
+    .cbab-create-account p {
+        color: #000000;
+        line-height: 24px;
+        margin: 12px 0 0;
+    }
+
+    .cbab-account-password {
+        margin: 0 0 31px;
+    }
+
+    .cbab-account-password label {
+        color: #000000;
+        font-size: 14px;
+        font-weight: 300;
+        letter-spacing: 0;
+        line-height: 16px;
+        margin: 0;
+    }
+
+    .cbab-account-password input[type="password"] {
+        border: 0 none;
+        border-bottom: 1px solid #e5e5e5;
+        color: #000000;
+        float: right;
+        font-size: 14px;
+        font-weight: 300;
+        height: 40px;
+        padding: 0 10px;
+        width: 55%;
+    }
+
+    .cbab-order-notes {}
+
+    .cbab-order-notes p {
+        color: #000000;
+        font-size: 14px;
+        font-weight: 300;
+        letter-spacing: 0;
+        line-height: 16px;
+        margin: 0 0 10px;
+    }
+
+    .cbab-order-notes input[type="text"] {
+        border: 0 none;
+        border-bottom: 1px solid #e5e5e5;
+        color: #000000;
+        font-size: 14px;
+        font-weight: 300;
+        height: 40px;
+        padding: 0 10px;
+        width: 100%;
+    }
+
+    .promotional-code-box {
+        background: #fff none repeat scroll 0 0;
+        border: 1px solid #ecedee;
+        margin-bottom: 30px;
+        margin-top: 30px;
+    }
+
+    .pcb-content {
+        padding: 0 35px 25px;
+    }
+
+    .pcb-content p {
+        color: #000000;
+        margin-bottom: 25px;
+    }
+
+    .pcb-cuppon-input {}
+
+    .pcb-cuppon-input input[type="text"] {
+        border: 0 none;
+        border-bottom: 1px solid #e5e5e5;
+        color: #000000;
+        float: left;
+        font-weight: 300;
+        height: 40px;
+        letter-spacing: 0;
+        text-align: center;
+        width: 46%;
+    }
+
+    .pcb-cuppon-input button {
+        float: right;
+        width: 50%;
+    }
+
+    .checkout-page-button {
+        background: #d22a28 none repeat scroll 0 0;
+        border: 0 none;
+        border-radius: 3px;
+        color: #fff;
+        display: inline-block;
+        padding: 5px 30px;
+        text-transform: uppercase;
+    }
+
+    .your-order-box {
+        background: #fff none repeat scroll 0 0;
+        border: 1px solid #ecedee;
+        margin-bottom: 30px;
+    }
+
+    .yob-content {
+        padding: 25px 25px 70px;
+    }
+
+    .yobc-title,
+    .yobc-title span {
+        color: #232530;
+        font-family: "Montserrat", sans-serif;
+        margin-bottom: 33px;
+    }
+
+    .yobc-title span {
+        float: right;
+    }
+
+    .yob-content ul {
+        list-style: outside none none;
+        padding: 0;
+    }
+
+    .yob-content ul li {
+        border-bottom: 1px solid #e5e5e5;
+        color: #000000;
+        font-size: 14px;
+        font-weight: 400;
+        letter-spacing: 0;
+        line-height: 30px;
+        margin: 0 0 27px;
+        padding: 0 0 1px;
+    }
+
+    .yob-content ul li.order-total {
+        text-transform: uppercase;
+    }
+
+    .yob-content ul li span {
+        color: #d22a28;
+        float: right;
+    }
+
+    .create-account-checkout-method {}
+
+    .select-payment-method {
+        margin-bottom: 3px;
+    }
+
+    .select-payment-method input[type="checkbox"] {}
+
+    .select-payment-method label {
+        color: #000000;
+        font-size: 14px;
+        font-weight: 300;
+        letter-spacing: 0;
+        margin-left: 10px;
+    }
+
+    .create-account-text {
+        border: 1px solid #e5e5e5;
+        margin: 0 0 20px;
+        padding: 21px 20px;
+    }
+
+    .create-account-text p {
+        color: #000000;
+        font-weight: 300;
+        line-height: 24px;
+    }
+
+    .place-order {
+        margin: 15px 0 0;
+        text-align: center;
+    }
+</style>
+
+<script>
+    // user country code for selected option
+    let user_country_code = "IN";
+
+    (function () {
+        // scripthttps://www.html-code-generator.com/html/drop-down/country-region
+
+        // Get the country name and state name from the imported script.
+        let country_list = country_and_states['country'];
+        let states_list = country_and_states['states'];
+
+        // creating country name drop-down
+        let option = '';
+        option += '<option>select country</option>';
+        for (let country_code in country_list) {
+            // set selected option user country
+            let selected = (country_code == user_country_code) ? ' selected' : '';
+            option += '<option value="' + country_code + '"' + selected + '>' + country_list[country_code] + '</option>';
+        }
+        document.getElementById('country').innerHTML = option;
+
+        // creating states name drop-down
+        let text_box = '<input type="text" name="state" class="input-text" id="state">';
+        let state_code_id = document.getElementById("state-code");
+
+        function create_states_dropdown() {
+            // get selected country code
+            let country_code = document.getElementById("country").value;
+            let states = states_list[country_code];
+            // invalid country code or no states add textbox
+            if (!states) {
+                state_code_id.innerHTML = text_box;
+                return;
+            }
+            let option = '';
+            if (states.length > 0) {
+                option = '<select name="state" id="state">\n';
+                for (let i = 0; i < states.length; i++) {
+                    option += '<option value="' + states[i].code + '">' + states[i].name + '</option>';
+                }
+                option += '</select>';
+            } else {
+                // create input textbox if no states 
+                option = text_box
+            }
+            state_code_id.innerHTML = option;
+        }
+
+        // country select change event
+        const country_select = document.getElementById("country");
+        country_select.addEventListener('change', create_states_dropdown);
+
+        create_states_dropdown();
+    })();
+</script>

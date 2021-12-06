@@ -1,0 +1,164 @@
+                 <div class="col-md-3">
+                    <div class="my-account-welcome">
+                        <h4 class="my-account-title">Welcome back!</h4>
+                        <ul>
+                            <li><a href="/userprofile">Your Account</a></li>
+                            <li><a href="/yourorders">Your Orders</a></li>
+                            <li><a href="/useraddress">Addresses</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <style>
+                    input[type="file"] {
+                        display: none;
+                    }
+                
+                    #edit_img {
+                        margin-left: 0px;
+                        color: white;
+                        font-size: large;
+                    }
+                
+                    * {
+                        margin: 0;
+                        padding: 0;
+                        border: 0;
+                    }
+                
+                    /* relevant styles */
+                    .img__wrap {
+                        position: relative;
+                        height: 180px;
+                        width: 150px;
+                        border-radius: 100px;
+                    }
+                
+                    .img__description {
+                        position: absolute;
+                        top: 0px;
+                        bottom: 25px;
+                        left: -1px;
+                        right: 0;
+                        justify-content: center;
+                        width: 114px;
+                        background: #000000b8;
+                        border-radius: 0;
+                        color: #fff;
+                        visibility: hidden;
+                        opacity: 0;
+                
+                        /* transition effect. not necessary */
+                        transition: opacity .2s, visibility .2s;
+                    }
+                
+                    .img__wrap:hover .img__description {
+                        visibility: visible;
+                        opacity: 1;
+                    }
+                
+                    .my-account-area {
+                        padding: 54px 0 120px;
+                    }
+                
+                    .my-account-title {
+                        color: #555555;
+                        font-size: 18px;
+                        letter-spacing: 0;
+                        margin: 0 0 23px;
+                        position: relative;
+                        text-transform: uppercase;
+                    }
+                
+                    .my-account-title::after {
+                        background: #ed1d7f none repeat scroll 0 0;
+                        bottom: -22px;
+                        content: "";
+                        height: 3px;
+                        left: 0;
+                        position: absolute;
+                        width: 30px;
+                        z-index: 2;
+                    }
+                
+                    .my-account-welcome {}
+                
+                    .my-account-welcome ul {
+                        list-style: outside none none;
+                        padding: 0;
+                    }
+                
+                    .my-account-welcome ul li {}
+                
+                    .my-account-welcome ul li a {
+                        color: #555555;
+                        font-size: 15px;
+                        font-weight: 300;
+                        letter-spacing: 0;
+                        line-height: 72px;
+                    }
+                
+                    .personal-information {}
+                
+                    .personal-information-box {
+                        margin: 51px 0 0;
+                    }
+                
+                    .pib-item {
+                        margin: 0 0 28px;
+                    }
+                
+                    .pib-item label {
+                        color: #555555;
+                        display: block;
+                        font-size: 15px;
+                        font-weight: 300;
+                        letter-spacing: 0;
+                        line-height: 17px;
+                        margin: 0 0 17px;
+                        text-transform: capitalize;
+                    }
+                
+                    .pib-item input[type="text"],
+                    .pib-item select {
+                        border: 1px solid #dddddd;
+                        color: #b7b7b7;
+                        font-size: 14px;
+                        font-weight: 300;
+                        height: 50px;
+                        letter-spacing: 0;
+                        padding: 0 10px;
+                        width: 100%;
+                    }
+                
+                    .pib-item.pib-item-date select {
+                        display: inline-block;
+                        margin-left: 3.3%;
+                        width: 30%;
+                    }
+                
+                    .pib-item.pib-item-date select.bd-month {
+                        margin-left: 0;
+                    }
+                
+                    .pib-item.pib-item-date select.bd-date {}
+                
+                    .pib-item.pib-item-date select.bd-year {}
+                
+                    .pib-save-change {
+                        margin: 32px 0 0;
+                        text-align: right;
+                    }
+                
+                    .pib-save-change button {
+                        background: #ed1d1d none repeat scroll 0 0;
+                        border: 0 none;
+                        border-radius: 3px;
+                        color: #fff;
+                        display: inline-block;
+                        font-size: 14px;
+                        letter-spacing: 0;
+                        padding: 5px 30px;
+                        text-transform: uppercase;
+                    }
+                </style>

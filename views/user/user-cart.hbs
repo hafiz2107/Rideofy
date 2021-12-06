@@ -1,0 +1,126 @@
+<section class="section-content padding-y bg">
+  <div class="container">
+
+
+    <!-- ============================ COMPONENT 1 ================================= -->
+
+
+
+    {{#if products}}
+
+
+    <div class="row">
+      <aside class="col-lg-9">
+
+        <div class="card">
+          <table class="table table-borderless table-shopping-cart table-responsive">
+            <thead class="text-muted">
+              <tr class="small text-uppercase">
+                <th scope="col">Product</th>
+                <th scope="col">Quantity</th>
+                <th scope="col" width="120">Price</th>
+                <th scope="col" class="text-right" width="200"> </th>
+              </tr>
+            </thead>
+            <tbody>
+            {{#each products}}
+              <tr>
+                <td>
+                  
+                  <figure class="itemside align-items-center">
+                    <div class="">
+                      <img src="/uploads/{{this.product._id}}__1.jpg" class="img-sm" height="90px">
+                    </div>
+
+                    <figcaption class="info">
+                      <h6>{{this.product.productname}}</h6>
+                    </figcaption>
+                  </figure>
+
+                </td>
+                <td>
+                  <!-- col.// -->
+                  <div class="col">
+                    <div class="" style="width: max-content;">
+
+                      <div class="" style="display: inline;">
+                        <a onclick="changeQuantity('{{this.product.productquantity}}','{{this._id}}','{{this.product._id}}',-1,'{{this.price}}','{{../userId}}')" class="btn btn-light" type="button"
+                           id="minus"> <i class="fa fa-minus"></i> </a>
+                      </div>
+
+                      <div style="display: inline;">
+                      <input type="text" class=" text-center" value="{{this.quantity}}" id="{{this.product._id}}" style="width: 2em; background-color: transparent;border: none;"  readonly>
+                      </div>
+
+
+                      <div class="" style="display: inline;">
+                        <a onclick="changeQuantity('{{this.product.productquantity}}','{{this._id}}','{{this.product._id}}',1,'{{this.price}}','{{../userId}}')" class="btn btn-light" type="button"
+                          id="button-plus"> <i class="fa fa-plus"></i> </a>
+                      </div>
+                    </div> <!-- input-group.// -->
+
+                  </div> <!-- col.// -->
+                </td>
+                <td>
+                  <div class="price-wrap">
+                    <span>₹ </span>
+                    <span style="color: black;font-weight: 600;" class="price" id="{{this.product._id}}1"> {{this.totalprice}}</span>
+                    
+                  </div> <!-- price-wrap .// -->
+                </td>
+                <td class="text-right">
+                  <!-- Button trigger modal -->
+                  <a class="cart-product-remove" onclick="deleteCartProduct('{{this._id}}','{{this.product._id}}')"
+                      style="color: white;"><i class="fa fa-close"></i></a>
+                </td>
+              </tr>
+            {{/each}}
+            </tbody>
+          </table>
+        </div> <!-- card.// -->
+
+      </aside> <!-- col.// -->
+{{!-- Each ends --}}
+      <aside class="col-lg-3">
+
+        <div class="card">
+          <div class="card-body">
+            <dl class="dlist-align">
+              <dt>Total price:</dt>
+              <dd class="text-right" id="total" style="color: black;font-weight: 600;">₹ {{totalValue}}</dd>
+            </dl>
+           
+            
+
+            <hr>
+            <p class="text-center mb-3">
+              <img src="/images/paypal-seeklogo.com.svg" height="20">
+              <img class="ml-3" src="/images/razorpay.svg" alt="" height="20"> 
+            </p>
+
+            <a onclick="confirmCheckOut('{{totalValue}}')" class="btn btn-primary btn-block"> Checkout </a>
+            <a href="/home" class="btn btn-light btn-block">Continue Shopping</a>
+          </div> <!-- card-body.// -->
+        </div> <!-- card.// -->
+
+      </aside> <!-- col.// -->
+
+
+    </div> <!-- row.// -->
+
+
+    {{else}}
+    <center>
+      <h1 style="color: red;">Sorry your cart is empty</h1>
+      <img src="/images/3298067.jpg" alt="" style="height: 250px;"><br>
+      <a class="btn btn-primary" href="/" style="margin-top: 67px;">Add some products</a>
+    </center>
+    {{/if}}
+
+    <!-- ============================ COMPONENT 1 END .// ================================= -->
+
+  </div> <!-- container .//  -->
+
+
+
+</section>

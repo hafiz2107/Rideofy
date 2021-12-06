@@ -1,0 +1,576 @@
+<style>
+  label {
+    color: rgb(43, 66, 197) !important;
+  }
+</style>
+
+<div class="content main-panel mt-5">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-primary">
+            <h4 class="card-title">Add Product</h4>
+            <p class="card-category">Complete your profile</p>
+          </div>
+
+          <div class="card-body">
+            <form action="/admin/add-product" method="post" id="addProductForm" enctype="multipart/form-data">
+              <div class="row">
+                <div class="col-md-5">
+                  <div class="form-group">
+                    <label for="">Product Name</label>
+                    <input type="text" class="form-control" id="productname" name="productname" placeholder="">
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="">Product Code</label>
+                    <input type="text" class="form-control" id="productcode" name="productcode" placeholder="">
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="">Product Category</label><br>
+                    <select name="productcategory" onchange="showSubCats()" id="mainCategory" class="btn btn-primary text-light custom-select">
+                      <option value="" class="dropdown-item text-dark bg-">Product Category </option>
+                      {{#each allCategories}}
+                      <option value="{{this.mainCategory}}"  class="dropdown-item">
+                        {{this.mainCategory}}
+                      </option>
+                      {{/each}}
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="">Product SubCategory : </label><br>
+
+                    <select name="productsubcategory" id="subcat" class="btn btn-primary text-light custom-select">
+                      <option value="" class="dropdown-item text-dark bg-" >Product sub Category </option>
+
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-md-4">
+                  <label for="">Product Brand : </label><br>
+                  <select name="productbrand" id="" class="btn btn-primary text-light custom-select">
+                    <option value="" class="dropdown-item text-dark bg-" >Product Brand
+                    </option>
+
+                    {{#each allProductBrands}}
+
+                    <option value="{{this.ProBrand}}" class="dropdown-item">{{this.ProBrand}}
+                    </option>
+
+                    {{/each}}
+
+                  </select>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="">Bike Brand : </label><br>
+                    <select name="suitablebikebrand" onchange="showBikeModels()" id="bikebrand" class="btn btn-primary text-light custom-select">
+                      <option value="" name="" class="dropdown-item text-dark bg-light">Suitable
+                        bike Brand </option>
+                      {{#each allBikeBrands}}
+                      <option value="{{this.bikeBrand}}" class="dropdown-item">
+                        {{this.bikeBrand}}
+                      </option>
+                      {{/each}}
+
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="">Bike Model : </label><br>
+                    <select name="suitablebikemodel" id="bikebrand1" class="btn btn-primary text-light custom-select">
+                      <option value="" name="" class="dropdown-item text-dark bg-light">Suitable bike Model </option>
+                      {{!-- {{#each allBikeBrands}}
+                      {{#each this.models}}
+                        <option value="{{this.bikemodels}}" class="dropdown-item">{{this.bikemodels}}</option>
+                      {{/each}}
+                      {{/each}} --}}
+
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="">Price</label>
+                    <input type="text" class="form-control" name="productprice" id="productprice" placeholder="">
+                  </div>
+                </div>
+                <div class="col-md-4" style="display: none;">
+                  <div class="form-group">
+                    <label for="">Offer Price</label>
+                    <input type="text" class="form-control" name="productofferprice" id="productofferprice" placeholder="" hidden>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="">Quantity</label>
+                    <input type="number" class="form-control" name="productquantity" id="productquantity"
+                      placeholder="">
+                  </div>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-md-4">
+                  <label for="">Description</label>
+                  <textarea class="form-control" name="productdes" id="productdes" placeholder=""></textarea>
+                </div>
+
+              </div>
+
+              <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="file1" class="btn btn-primary"
+                      type="button" class="btn btn-primary">Image 1</label>
+                    <img src="" alt="" style="width: 100px; height:auto;display: inherit;" id="imgview1">
+                    <div id="errMess1"></div>
+                    <input type="file" data-toggle="modal" name="image1" id="file1" class="form-control" onchange="return fileValidation1()">
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="file2"  class="btn btn-primary">IMAGE
+                      2</label>
+                    <img src="" alt="" style="width: 100px; height:auto;display: inherit;" id="imgview2">
+                    <div id="errMess2"></div>
+                    <input type="file" data-toggle="modal" name="image2" id="file2" class="form-control"
+                      onchange="return fileValidation2()">
+                  </div>
+                </div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label for="file3"  class="btn btn-primary">IMAGE
+                      3</label>
+                    <img src="" alt="" style="width: 100px; height:auto;display: inherit;" id="imgview3">
+                    <div id="errMess3"></div>
+                    <input type="file" data-toggle="modal" name="image3" id="file3" class="form-control"
+                      onchange="return fileValidation3()">
+                  </div>
+                </div>
+              </div>
+
+
+
+
+              <div class="clearfix"></div>
+
+              {{!-- Modal for cropping --}}
+              <div class="form-row mt-5">
+                <div class="form-group col-md-6">
+                  {{!-- Modal for image cropping --}}
+                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Crop Image</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="col-12">
+                            <div style="width: 300px; height: auto; display: none;" id="image-box"></div>
+                            <button style="display: none;" class="btn btn-primary mt-4" type="button" id="crop-btn"
+                              data-dismiss="modal">Crop</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                              onclick="buttonChange()">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {{!-- Modal for image cropping ends --}}
+
+                </div>
+              </div>
+              {{!-- Modal --}}
+              <input type="hidden" name="status" value="pending">
+
+              <button type="submit" id="confirm-btn" class="btn btn-success">Add product</button>
+              <a href="/admin/view-product" class="btn btn-danger">Cancel</a>
+           
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.js"></script>
+<style>
+  .error {
+    color: red !important;
+  }
+</style>
+<script>
+  $(document).ready(function () {
+    $('#addProductForm').validate({
+      rules: {
+        productname: {
+          required: true,
+        },
+        productcode: {
+          required: true,
+          maxlength: 10,
+        },
+        productcategory: {
+          required: true,
+        },
+        productsubcategory: {
+          required: true
+        },
+        productbrand: {
+          required: true
+        },
+        suitablebikebrand: {
+          required: true,
+        },
+        suitablebikemodel: {
+          required: true
+        },
+        productprice: {
+          required: true,
+          digits: true,
+        },
+        productquantity: {
+          required: true
+        },
+        productdes: {
+          required: true,
+          minlength: 20,
+        },
+        image1: {
+          required: true
+        },
+        image2: {
+          required: true
+        },
+        image3: {
+          required: true
+        }
+
+      }
+    })
+  })
+</script>
+
+<script>
+  //Function to show all sub cats
+  function showSubCats() {
+    var val = document.getElementById('mainCategory').value
+    $.ajax({
+      url: '/admin/getthesubcat/' + val,
+      method: 'post',
+      success: (subCat) => {
+        if (subCat.length > 0) {
+          document.getElementById('subcat').innerHTML = ''
+          var result = []
+
+          for (i = 0; i < subCat.length; i++) {
+            result[i] = { subcat: subCat[i].SubCategory.subCat, id: subCat[i].SubCategory.id }
+          }
+
+
+          var option = []
+          for (i = 0; i < result.length; i++) {
+            option[i] = document.createElement('option')
+            option[i].setAttribute('class', "dropdown-item");
+            option[i].innerHTML = result[i].subcat
+            option[i].value = result[i].subcat
+            $("#subcat").append(option[i]);
+          }
+        }else{
+          document.getElementById('subcat').innerHTML = ''
+        }
+
+      }
+    })
+  }
+
+  //Function to show all bike models
+  function showBikeModels() {
+
+    var brand = document.getElementById('bikebrand').value
+    $.ajax({
+      url: '/admin/getbikemodels/' + brand,
+      method: 'post',
+      success: (models) => {
+        if (models.length > 0) {
+          document.getElementById('bikebrand1').innerHTML = '';
+          result = [];
+          for (i = 0; i < models.length; i++) {
+            result[i] = { model: models[i].models.bikemodels, id: models[i].models.id }
+          }
+
+          var option = []
+          for (i = 0; i < result.length; i++) {
+            option[i] = document.createElement('option')
+            option[i].setAttribute('class', "dropdown-item");
+            option[i].innerHTML = result[i].model
+            option[i].value = result[i].model
+            console.log("The optuon : ", option[i])
+            $("#bikebrand1").append(option[i]);
+          }
+
+        }else{
+           document.getElementById('bikebrand1').innerHTML = '';
+        }
+      }
+    })
+  }
+</script>
+
+<script>
+  function buttonChange() {
+    document.getElementById('confirm-btn').style.display = 'block'
+  }
+
+
+  function fileValidation1() {
+    const imagebox = document.getElementById('image-box')
+    const crop_btn = document.getElementById('crop-btn')
+    var fileInput = document.getElementById('file1');
+
+    var filePath = fileInput.value;
+    var allowedExtensions = /(\.jpg)$/i;
+    if (!allowedExtensions.exec(filePath)) {
+      document.getElementById('errMess1').innerHTML = '<p style="color:red; display: block;">Invalid file type</p>'
+      fileInput.value = '';
+      return false;
+    } else {
+      //Image input field id
+      var fileTrue = document.getElementById('file1').onchange.length
+      if (fileTrue == 1) {
+        document.getElementById('file1').dataset.target = '#exampleModal'
+        //Give modal target to the input field
+
+        //add a click event to the input field so that the modal could open
+        document.getElementById('file1').click()
+
+        //Making filetrue to 0 So that the modal will only open if there is a file 
+        fileTrue = 0
+      }
+      //Making data target to none so that modal will open if there is a file
+      document.getElementById('file1').dataset.target = 'none'
+
+      document.getElementById('errMess1').innerHTML = ''
+      //Image preview
+      const img_data = fileInput.files[0]
+      const url = URL.createObjectURL(img_data)
+      imagebox.innerHTML = `<img src="${url}" id="image" style="width:100%">`
+      const image = document.getElementById('image')
+      document.getElementById('image-box').style.display = 'block'
+      document.getElementById('crop-btn').style.display = 'block'
+      document.getElementById('confirm-btn').style.display = 'block'
+
+      const cropper = new Cropper(image, {
+        autoCropArea: 1,
+        viewMode: 2,
+        scalable: false,
+        zoomable: true,
+        movable: true,
+        aspectRatio: 0.75 / 1,
+        //  preview: '.preview',
+        minCropBoxWidth: 180,
+        minCropBoxHeight: 240,
+      })
+      crop_btn.addEventListener('click', () => {
+        cropper.getCroppedCanvas().toBlob((blob) => {
+          let fileInputElement = document.getElementById('file1');
+          let file = new File([blob], img_data.name, { type: "image/*", lastModified: new Date().getTime() });
+          let container = new DataTransfer();
+
+          container.items.add(file);
+          const img = container.files[0]
+          var url = URL.createObjectURL(img)
+          fileInputElement.files = container.files;
+          document.getElementById('imgview1').src = url
+          document.getElementById('image-box').style.display = 'none'
+          document.getElementById('crop-btn').style.display = 'none'
+          document.getElementById('confirm-btn').style.display = 'block'
+
+        });
+      });
+    }
+  }
+
+
+  function fileValidation2() {
+    const imagebox = document.getElementById('image-box')
+    const crop_btn = document.getElementById('crop-btn')
+    var fileInput = document.getElementById('file2');
+
+    var filePath = fileInput.value;
+    var allowedExtensions = /(\.jpg)$/i;
+    if (!allowedExtensions.exec(filePath)) {
+      document.getElementById('errMess2').innerHTML = '<p style="color:red; display: block;">Invalid file type</p>'
+      fileInput.value = '';
+      return false;
+    } else {
+      //Image input field id
+      var fileTrue1 = document.getElementById('file2').onchange.length
+      if (fileTrue1 == 1) {
+        document.getElementById('file2').dataset.target = '#exampleModal'
+        //Give modal target to the input field
+
+        //add a click event to the input field so that the modal could open
+        document.getElementById('file2').click()
+
+        //Making filetrue to 0 So that the modal will only open if there is a file 
+        fileTrue1 = 0
+      }
+      //Making data target to none so that modal will open if there is a file
+      document.getElementById('file2').dataset.target = 'none'
+
+      document.getElementById('errMess2').innerHTML = ''
+      //Image preview
+      const img_data = fileInput.files[0]
+      const url = URL.createObjectURL(img_data)
+      imagebox.innerHTML = `<img src="${url}" id="image" style="width:100%">`
+      const image = document.getElementById('image')
+      document.getElementById('image-box').style.display = 'block'
+      document.getElementById('crop-btn').style.display = 'block'
+      document.getElementById('confirm-btn').style.display = 'none'
+
+      const cropper = new Cropper(image, {
+        autoCropArea: 1,
+        viewMode: 2,
+        scalable: false,
+        zoomable: true,
+        movable: true,
+        aspectRatio: 0.75 / 1,
+        //  preview: '.preview',
+        minCropBoxWidth: 180,
+        minCropBoxHeight: 240,
+      })
+      crop_btn.addEventListener('click', () => {
+        cropper.getCroppedCanvas().toBlob((blob) => {
+          let fileInputElement = document.getElementById('file2');
+          let file = new File([blob], img_data.name, { type: "image/*", lastModified: new Date().getTime() });
+          let container = new DataTransfer();
+
+          container.items.add(file);
+          const img = container.files[0]
+          var url = URL.createObjectURL(img)
+          fileInputElement.files = container.files;
+          document.getElementById('imgview2').src = url
+          document.getElementById('image-box').style.display = 'none'
+          document.getElementById('crop-btn').style.display = 'none'
+          document.getElementById('confirm-btn').style.display = 'block'
+        });
+      });
+    }
+  }
+
+  function fileValidation3() {
+    const imagebox = document.getElementById('image-box')
+    const crop_btn = document.getElementById('crop-btn')
+    var fileInput = document.getElementById('file3');
+
+    var filePath = fileInput.value;
+    var allowedExtensions = /(\.jpg)$/i;
+    if (!allowedExtensions.exec(filePath)) {
+      document.getElementById('errMess3').innerHTML = '<p style="color:red; display: block;">Invalid file type</p>'
+      fileInput.value = '';
+      return false;
+    } else {
+
+       //Image input field id
+      var fileTrue2 = document.getElementById('file3').onchange.length
+      if (fileTrue2 == 1) {
+        document.getElementById('file3').dataset.target = '#exampleModal'
+        //Give modal target to the input field
+
+        //add a click event to the input field so that the modal could open
+        document.getElementById('file3').click()
+
+        //Making filetrue to 0 So that the modal will only open if there is a file 
+        fileTrue2 = 0
+      }
+      //Making data target to none so that modal will open if there is a file
+      document.getElementById('file3').dataset.target = 'none'
+
+      document.getElementById('errMess3').innerHTML = ''
+      //Image preview
+      const img_data = fileInput.files[0]
+      const url = URL.createObjectURL(img_data)
+      imagebox.innerHTML = `<img src="${url}" id="image" style="width:100%">`
+      const image = document.getElementById('image')
+      document.getElementById('image-box').style.display = 'block'
+      document.getElementById('crop-btn').style.display = 'block'
+      document.getElementById('confirm-btn').style.display = 'none'
+
+      const cropper = new Cropper(image, {
+        autoCropArea: 1,
+        viewMode: 2,
+        scalable: false,
+        zoomable: true,
+        movable: true,
+        aspectRatio: 0.75 / 1,
+        //  preview: '.preview',
+        minCropBoxWidth: 180,
+        minCropBoxHeight: 240,
+      })
+      crop_btn.addEventListener('click', () => {
+        cropper.getCroppedCanvas().toBlob((blob) => {
+          let fileInputElement = document.getElementById('file3');
+          let file = new File([blob], img_data.name, { type: "image/*", lastModified: new Date().getTime() });
+          let container = new DataTransfer();
+
+          container.items.add(file);
+          const img = container.files[0]
+          var url = URL.createObjectURL(img)
+          fileInputElement.files = container.files;
+          document.getElementById('imgview3').src = url
+          document.getElementById('image-box').style.display = 'none'
+          document.getElementById('crop-btn').style.display = 'none'
+          document.getElementById('confirm-btn').style.display = 'block'
+        });
+      });
+    }
+  }
+
+</script>
+
+{{!--
+<script>
+  function displayAllSubCat() {
+    var cat = document.getElementById('mainCategory').value
+    $.ajax({
+      url: '/admin/getAppropriateCAt/' + cat,
+      method: 'get'
+    })
+
+  }
+</script> --}}

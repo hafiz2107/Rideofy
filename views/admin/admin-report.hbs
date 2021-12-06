@@ -1,0 +1,328 @@
+<div id="wrap" class="container-fluid" style="padding-left: 285px;">
+    <div class="">
+        <h2>Sales report</h2>
+        <hr>
+        <br>
+
+        <div>
+            <h3 class="text-center"><u>All orders</u></h3><br>
+
+        </div>
+        <table cellpadding="0" cellspacing="0" border="0" id="sales"
+            class="datatable table table-striped table-bordered">
+            <div id="errMess"></div>
+            <form action="">
+                <div>
+                    <label for="from" style="color: black;">From date</label>
+                    <input type="date" name="from" id="from" class="form-control" style="width: 15%; display: inline;"
+                        oninput="setDateToMin()">
+                    <label for="to" style="color: black;">To Date</label>
+                    <input type="date" name="to" id="to" class="form-control" style="width: 15%;display: inline;"
+                        oninput="setDateToMax()">
+                    <button onclick="getReportOnDate()" class="btn btn-primary ml-3">Get Report</button>
+                </div><br>
+            </form>
+            {{#if orders}}
+
+
+            <thead>
+                <tr>
+                    <th><strong>Sl. No</strong></th>
+                    <th><strong>Order Date</strong></th>
+                    <th><strong>Order ID</strong></th>
+                    <th><strong> User ID</strong></th>
+                    <th> <strong>Delvery Location</strong> </th>
+                    <th> <strong>Payement method</strong></th>
+                    <th> <strong>Order Total</strong></th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                {{#if orderondate}}
+                <a id="showAll" href="/admin/report/true" class="btn btn-success">Show All orders</a><br><br>
+                {{/if}}
+
+
+
+                {{#each orders}}
+                <tr class="gradeX">
+                    <td>{{add @index '1'}}</td>
+                    <td>{{this.orderDate}}</td>
+                    <td><a onclick="getOrderDetails('{{this._id}}')" style="cursor: pointer;"
+                            class="text-primary">{{this._id}}</a></td>
+                    <td>{{this.userId}}</td>
+                    <td>{{this.delivery.city}},{{this.delivery.pincode}}</td>
+                    <td>{{this.payment_method}}</td>
+                    <td>{{this.totalAmount}}</td>
+                </tr>
+
+                {{/each}}
+
+
+        </table>
+        <button class="btn btn-danger" onclick="getReport()">Download pdf</button>
+        <button class="btn btn-success" onclick="getspreadSheet()">Download XLS</button>
+        {{else}}
+        <h1>No data available</h1>
+        <a href="/admin/report/true" class="btn btn-success">Show All orders</a><br><br>
+        {{/if}}
+        
+    </div>
+    <hr style="border: 5px solid black;">
+    {{!-- Table 2 --}}
+
+    <div>
+        <div>
+            <h3 class="text-center"><u>Delivered orders</u></h3><br>
+
+        </div>
+        <table cellpadding="0" cellspacing="0" border="0" id="deliveryreport"
+            class="datatable table table-striped table-bordered">
+            <div id="errMess1"></div>
+            <form action="">
+                <div>
+                    <label for="fromdelivery" style="color: black;">From date</label>
+                    <input type="date" name="from" id="fromdelivery" class="form-control"
+                        style="width: 15%; display: inline;" oninput="setDeliveryDateToMin()">
+                    <label for="todelivery" style="color: black;">To Date</label>
+                    <input type="date" name="to" id="todelivery" class="form-control"
+                        style="width: 15%;display: inline;" oninput="setDeliveryDateToMax()">
+                    <button onclick="getReportOnDatedelivery()" class="btn btn-primary ml-3">Get Report</button>
+                </div><br>
+            </form>
+            {{#if deliveredOrders}}
+            <thead>
+                <tr>
+                    <th><strong>Sl. No</strong></th>
+                    <th><strong>Order Date</strong></th>
+                    <th><strong>Order ID</strong></th>
+                    <th><strong> User ID</strong></th>
+                    <th> <strong>Delvery Location</strong> </th>
+                    <th> <strong>Payement method</strong></th>
+                    <th> <strong>Order Total</strong></th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                {{#if delivery}}
+                <a href="/admin/report/true" class="btn btn-success">Show All
+                    orders</a><br><br>
+                {{/if}}
+                {{!-- deliveredd --}}
+                {{#each deliveredOrders}}
+                <tr class="gradeX">
+                    <td>{{add @index '1'}}</td>
+                    <td>{{this.orderDate}}</td>
+                    <td>{{this._id}}</td>
+                    <td>{{this.userId}}</td>
+                    <td>{{this.delivery.city}},{{this.delivery.pincode}}</td>
+                    <td>{{this.payment_method}}</td>
+                    <td>{{this.totalAmount}}</td>
+                </tr>
+                {{/each}}
+
+
+        </table>
+        <button class="btn btn-danger" onclick="getDeliveryReport()">Download pdf</button>
+        <button class="btn btn-success" onclick="getDeliveryspreadSheet()">Download XLS</button>
+                {{else}}
+                <a href="/admin/report/true" class="btn btn-success">Show All orders</a><br><br>
+                <h1>No data available</h1>
+                {{/if}}
+
+        
+    </div>
+    <hr><br>
+</div>
+
+
+{{!-- Modal Order Details --}}
+<div class="modal fade" id="orderDetails" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Order details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+
+                <div id="proId"> </div>
+                <div id="proName"> </div>
+                <div id="total"> </div>
+                <div id="coupon"> </div>
+                <div id="orderDate"> </div>
+                <div id="status"> </div>
+
+            </div>
+            <div class="modal-footer text-center">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button type="button" class="btn btn-primary" id="orderDetailsbtn" data-toggle="modal" data-target="#orderDetails"
+    hidden>
+</button>
+
+
+
+<script>
+    $(document).ready(function () {
+        document.getElementById('from').max = new Date().toISOString().split("T")[0]
+        document.getElementById('to').max = new Date().toISOString().split("T")[0]
+
+        document.getElementById('fromdelivery').max = new Date().toISOString().split("T")[0]
+        document.getElementById('todelivery').max = new Date().toISOString().split("T")[0]
+    })
+
+    function setDateToMin() {
+        document.getElementById('to').min = document.getElementById('from').value
+    }
+
+    function setDateToMax() {
+        document.getElementById('from').max = document.getElementById('to').value
+    }
+
+    function setDeliveryDateToMin() {
+        document.getElementById('todelivery').min = document.getElementById('fromdelivery').value
+    }
+    function setDeliveryDateToMax() {
+        document.getElementById('fromdelivery').max = document.getElementById('todelivery').value
+    }
+    function getOrderDetails(orderId) {
+        $.ajax({
+            url: '/admin/getorderdetails/' + orderId,
+            method: 'get',
+            success: (order) => {
+                if (order.mode == 'cartorder') {
+
+                } else {
+                    document.getElementById('proId').innerHTML = `<span style="font-weight: 500;">Product ID : <span>${order.productId}</span></span>`
+                    document.getElementById('proName').innerHTML = `<span style="font-weight: 500;">Product Name : <span>${order.productName}</span></span>`
+                    document.getElementById('total').innerHTML = `<span style="font-weight: 500;">Total : <span>${order.totalAmount}</span></span>`
+                    if (order.coupon != '') {
+                        document.getElementById('coupon').innerHTML = `<span style="font-weight: 500;">Coupon Applied : <span>${order.coupon}</span></span>`
+                    }
+                    document.getElementById('orderDate').innerHTML = `<span style="font-weight: 500;">Order Date : <span>${order.orderDate}</span></span>`
+                    document.getElementById('status').innerHTML = `<span style="font-weight: 500;">Order Date : <span>${order.status}</span></span>`
+                }
+                document.getElementById('orderDetailsbtn').click()
+            }
+        })
+    }
+
+    function dateConvertfrom(from) {
+        var arr = from.split("-");
+        var day = arr[2] - 0;
+        var month = arr[1] - 1;
+        var year = arr[0] - 0;
+        return new Date(year, month, day);
+    }
+    function dateConvertTo(to) {
+        var arr = to.split("-");
+        var day = arr[2] - 0;
+        var month = arr[1] - 1;
+        var year = arr[0] - 0;
+        return new Date(year, month, day);
+    }
+
+    function getReportOnDatedelivery() {
+        from = document.getElementById('fromdelivery').value
+        to = document.getElementById('todelivery').value
+
+
+
+        dateFrom = dateConvertfrom(from)
+        dateTo = dateConvertTo(to)
+
+        if (dateTo >= dateFrom) {
+            //correct situation
+            document.getElementById('errMess1').style.display = 'none'
+            $.ajax({
+                url: '/admin/deliverygetreportondate/' + from + '/' + to,
+                method: 'get',
+                success: (deliveredReportonDate) => {
+                    location.reload()
+                }
+            })
+        } else {
+            document.getElementById('errMess1').style.display = 'block'
+            document.getElementById('errMess1').innerHTML = '<span style="color: red;">The to date must be greater than from date !</span>'
+        }
+
+    }
+
+    function getReportOnDate() {
+
+        from = document.getElementById('from').value
+        to = document.getElementById('to').value
+
+
+        dateFrom = dateConvertfrom(from)
+        dateTo = dateConvertTo(to)
+
+        if (dateTo >= dateFrom) {
+            //correct situation
+            document.getElementById('errMess').style.display = 'none'
+            $.ajax({
+                url: '/admin/getreportondate/' + from + '/' + to,
+                method: 'get',
+                success: (orderSortedInDate) => {
+                    location.reload()
+                }
+            })
+        } else {
+            document.getElementById('errMess').style.display = 'block'
+            document.getElementById('errMess').innerHTML = '<span style="color: red;">The to date must be greater than from date !</span>'
+        }
+    }
+
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.min.js"></script>
+<script src="//cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#sales').DataTable();
+    });
+
+    function getReport() {
+        var element = document.getElementById('sales');
+        html2pdf(element);
+    }
+
+    function getspreadSheet() {
+        $(document).ready(function () {
+            $("#sales").table2excel({
+                filename: "Order Report.xls"
+            });
+        });
+    }
+
+    $(document).ready(function () {
+        $('#deliveryreport').DataTable();
+    });
+
+    function getDeliveryReport() {
+        var element = document.getElementById('deliveryreport');
+        html2pdf(element);
+    }
+    function getDeliveryspreadSheet() {
+        $(document).ready(function () {
+            $("#deliveryreport").table2excel({
+                filename: "Order Report.xls"
+            });
+        });
+    }
+</script>

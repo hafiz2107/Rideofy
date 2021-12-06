@@ -1,0 +1,347 @@
+<div id="wrap" class="container-fluid" style="padding-left: 285px;">
+    <div>
+        <h3>Adverisement Management</h3>
+        <center>
+            {{!-- Top Area --}}
+            <div class="row">
+                <div class="col-md-12">
+                    <hr>
+
+                    <h3>Ad for Category</h3>
+                    <form action="/admin/topad1" method="post" enctype="multipart/form-data" id="topAdForm">
+                        {{!-- Image 1 --}}
+                        <div style="display: inline;">
+                            <div id="errMessTop1"></div>
+                            <img src="" alt="" style="width: 100px; height:auto;display: block;" id="topImgview1">
+                            <label for="topimage1" id="label1" class="btn btn-info" data-toggle="modal">AD Image </label>
+                            <input type="file" name="topimage1" id="topimage1" onchange="return fileValidationTop1()" required='true' style="display: none;">
+                            {{!-- Product --}}
+                            <div>
+                                <label for="product" class="mt-3"><strong>Offer :</strong></label>
+                                <select name="offerCat" id="productSelect">
+                                    {{#each offers}}
+                                    <option value="{{this.category}}">{{this.offerName}}</option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                            {{!-- Product Ends --}}
+
+                            <button class="btn btn-danger mt-3" type="submit" id="confirm-btn1"
+                                style="display: block;">Submit</button>
+
+
+                        </div>
+                    </form>
+
+                    <hr>
+                    <h3>Ad For product  :</h3>
+                    <form action="/admin/topad2" method="post" enctype="multipart/form-data" id="topAd2">
+                        {{!-- image 2 --}}
+                        <div style="display: inline;">
+                            <div id="errMessTop2"></div>
+                            <img src="" alt="" style="width: 100px; height:auto;display: block;" id="topImgview2">
+                            <label for="topimage2" id="label2" class="btn btn-primary" data-toggle="modal">AD Image</label>
+                            <input type="file" name="topimage2" id="topimage2" onchange="return fileValidationTop2()"
+                                hidden>
+                                {{!-- Product --}}
+                                <div>
+                                    <label for="product" class="mt-3"><strong>Product :</strong></label>
+                                    <select name="productAd" id="productSelect">
+                                        {{#each products}}
+                                        <option value="{{this._id}}">{{this.productname}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                                {{!-- Product Ends --}}
+
+                            <button class="btn btn-danger" type="submit" id="confirm-btn2"
+                                style="display: block;">Submit</button>
+                        </div>
+                    </form>
+
+                    <hr>
+
+                    <form action="/admin/topad3" method="post" enctype="multipart/form-data">
+                        {{!-- image 3 --}}
+                        <div style="display: inline;">
+                            <div id="errMessTop3"></div>
+                            <img src="" alt="" style="width: 100px; height:auto;display: block;" id="topImgview3">
+                            <label for="topimage3" id="label3" class="btn btn-warning" data-toggle="modal">Image 3</label>
+                            <input type="file" name="topimage3" id="topimage3" onchange="return fileValidationTop3()"
+                                hidden>
+                                {{!-- Product --}}
+                                <div>
+                                    <label for="product" class="mt-3"><strong>Offer :</strong></label>
+                                    <select name="offerCat" id="productSelect">
+                                        {{#each offers}}
+                                            <option value="{{this.category}}">{{this.offerName}}</option>
+                                        {{/each}}
+                                    </select>
+                                </div>
+                                {{!-- Product Ends --}}
+
+                            <button class="btn btn-danger" type="submit" id="confirm-btn3"
+                                style="display: block;">Submit</button>
+                        </div>
+
+
+                    </form>
+                </div>
+            </div>
+            {{!-- Top area ends --}}
+        </center>
+        <hr style="border: 5px solid black;">
+
+    
+       
+{{!-- Modal for image cropping --}}
+<div class="modal fade" id="cropMod" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Crop Image</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-12">
+                    <div style="width: 300px; height: auto; display: none;" id="image-box"></div>
+
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+                    <button style="display: none;" class="btn btn-danger mt-4" type="button" id="crop-btn"
+                        data-dismiss="modal" style="float: right;">Crop</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{!-- Modal for image cropping ends --}}
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.11/cropper.js"></script>
+
+<script>
+    $(document).ready(function (){
+        $('#topAdForm').validate({
+            rules:{
+                topimage1:{
+                    required : true,
+                },
+                offerCat :{
+                    required : true,
+                }
+            }
+        })
+    })
+
+    $(document).ready(function(){
+        $('#topAd2').validate({
+            rules : {
+                topimage2 : {
+                    required : true,
+                },
+                productAd:{
+                    required : true,
+                }
+            }
+        })
+    })
+</script>
+
+<script>
+
+
+    function fileValidationTop1() {
+        const imagebox1 = document.getElementById('image-box');
+        const crop_btn1 = document.getElementById('crop-btn');
+        var fileInput1 = document.getElementById('topimage1');
+
+        var filePath1 = fileInput1.value;
+        var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+        if (!allowedExtensions.exec(filePath1)) {
+            document.getElementById('errMessTop1').innerHTML = '<p style="color:red; display: block;">Invalid file type</p>'
+            document.getElementById('image-box').style.display = 'none'
+            fileInput1.value = '';
+            return false;
+        } else {
+            document.getElementById('errMessTop1').innerHTML = ''
+            var fileTrue1 = document.getElementById('topimage1').onchange.length
+
+            if (fileTrue1 == 1) {
+                document.getElementById('label1').dataset.target = '#cropMod'
+                console.log("Data : ", document.getElementById('label1').dataset.target)
+                document.getElementById('label1').click()
+                fileTrue1 = 0
+            }
+            document.getElementById('label1').dataset.target = 'none'
+
+            //Image preview
+            const img_data1 = fileInput1.files[0]
+            const url1 = URL.createObjectURL(img_data1)
+            imagebox1.innerHTML = `<img src="${url1}" id="image" style="width:100%">`
+            const image1 = document.getElementById('image')
+            document.getElementById('image-box').style.display = 'block'
+            document.getElementById('crop-btn').style.display = ''
+            document.getElementById('confirm-btn1').style.display = 'block'
+
+            const cropper = new Cropper(image, {
+                autoCropArea: 1,
+                viewMode: 1,
+                scalable: false,
+                zoomable: true,
+                movable: false,
+                aspectRatio: 16 / 9,
+                //  preview: '.preview',
+                minCropBoxWidth: 180,
+                minCropBoxHeight: 240,
+            })
+            crop_btn1.addEventListener('click', () => {
+                cropper.getCroppedCanvas().toBlob((blob) => {
+                    let fileInputElement1 = document.getElementById('topimage1');
+                    let file1 = new File([blob], img_data1.name, { type: "image/*", lastModified: new Date().getTime() });
+                    let container1 = new DataTransfer();
+
+                    container1.items.add(file1);
+                    const img1 = container1.files[0]
+                    var url1 = URL.createObjectURL(img1)
+                    fileInputElement1.files = container1.files;
+                    document.getElementById('topImgview1').src = url1
+                    document.getElementById('image-box').style.display = 'none'
+                    document.getElementById('crop-btn').style.display = 'none'
+                    document.getElementById('confirm-btn1').style.display = 'block'
+                });
+            });
+        }
+    }
+
+    function fileValidationTop2() {
+        const imagebox2 = document.getElementById('image-box');
+        const crop_btn2 = document.getElementById('crop-btn');
+        var fileInput2 = document.getElementById('topimage2');
+
+        var filePath2 = fileInput2.value;
+        var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+        if (!allowedExtensions.exec(filePath2)) {
+            document.getElementById('errMessTop2').innerHTML = '<p style="color:red; display: block;">Invalid file type</p>'
+            document.getElementById('image-box').style.display = 'none'
+            fileInput2.value = '';
+            return false;
+        } else {
+            document.getElementById('errMessTop2').innerHTML = ''
+            var fileTrue2 = document.getElementById('topimage2').onchange.length
+
+            if (fileTrue2 == 1) {
+                document.getElementById('label2').dataset.target = '#cropMod'
+                console.log("Data : ", document.getElementById('label2').dataset.target)
+                document.getElementById('label2').click()
+                fileTrue2 = 0
+            }
+            document.getElementById('label2').dataset.target = 'none'
+
+            //Image preview
+            const img_data2 = fileInput2.files[0]
+            const url2 = URL.createObjectURL(img_data2)
+            imagebox2.innerHTML = `<img src="${url2}" id="image" style="width:100%">`
+            const image2 = document.getElementById('image')
+            document.getElementById('image-box').style.display = 'block'
+            document.getElementById('crop-btn').style.display = ''
+            document.getElementById('confirm-btn2').style.display = 'block'
+
+            const cropper = new Cropper(image, {
+                autoCropArea: 1,
+                viewMode: 1,
+                scalable: false,
+                zoomable: true,
+                movable: false,
+                aspectRatio: 16 / 9,
+                //  preview: '.preview',
+                minCropBoxWidth: 180,
+                minCropBoxHeight: 240,
+            })
+            crop_btn2.addEventListener('click', () => {
+                cropper.getCroppedCanvas().toBlob((blob) => {
+                    let fileInputElement2 = document.getElementById('topimage2');
+                    let file2 = new File([blob], img_data2.name, { type: "image/*", lastModified: new Date().getTime() });
+                    let container2 = new DataTransfer();
+
+                    container2.items.add(file2);
+                    const img2 = container2.files[0]
+                    var url2 = URL.createObjectURL(img2)
+                    fileInputElement2.files = container2.files;
+                    document.getElementById('topImgview2').src = url2
+                    document.getElementById('image-box').style.display = 'none'
+                    document.getElementById('crop-btn').style.display = 'none'
+                    document.getElementById('confirm-btn2').style.display = 'block'
+                });
+            });
+        }
+    }
+
+    function fileValidationTop3() {
+        const imagebox3 = document.getElementById('image-box');
+        const crop_btn3 = document.getElementById('crop-btn');
+        var fileInput3 = document.getElementById('topimage3');
+
+        var filePath3 = fileInput3.value;
+        var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+        if (!allowedExtensions.exec(filePath3)) {
+            document.getElementById('errMessTop3').innerHTML = '<p style="color:red; display: block;">Invalid file type</p>'
+            document.getElementById('image-box').style.display = 'none'
+            fileInput3.value = '';
+            return false;
+        } else {
+            document.getElementById('errMessTop3').innerHTML = ''
+            var fileTrue3 = document.getElementById('topimage3').onchange.length
+
+            if (fileTrue3 == 1) {
+                document.getElementById('label3').dataset.target = '#cropMod'
+                console.log("Data : ", document.getElementById('label3').dataset.target)
+                document.getElementById('label3').click()
+                fileTrue3 = 0
+            }
+            document.getElementById('label3').dataset.target = 'none'
+
+            //Image preview
+            const img_data3 = fileInput3.files[0]
+            const url3 = URL.createObjectURL(img_data3)
+            imagebox3.innerHTML = `<img src="${url3}" id="image" style="width:100%">`
+            const image3 = document.getElementById('image')
+            document.getElementById('image-box').style.display = 'block'
+            document.getElementById('crop-btn').style.display = ''
+            document.getElementById('confirm-btn3').style.display = 'block'
+
+            const cropper = new Cropper(image, {
+                autoCropArea: 1,
+                viewMode: 1,
+                scalable: false,
+                zoomable: true,
+                movable: false,
+                aspectRatio: 16 / 9,
+                //  preview: '.preview',
+                minCropBoxWidth: 180,
+                minCropBoxHeight: 240,
+            })
+            crop_btn3.addEventListener('click', () => {
+                cropper.getCroppedCanvas().toBlob((blob) => {
+                    let fileInputElement3 = document.getElementById('topimage3');
+                    let file3 = new File([blob], img_data3.name, { type: "image/*", lastModified: new Date().getTime() });
+                    let container3 = new DataTransfer();
+
+                    container3.items.add(file3);
+                    const img3 = container3.files[0]
+                    var url3 = URL.createObjectURL(img3)
+                    fileInputElement3.files = container3.files;
+                    document.getElementById('topImgview3').src = url3
+                    document.getElementById('image-box').style.display = 'none'
+                    document.getElementById('crop-btn').style.display = 'none'
+                    document.getElementById('confirm-btn3').style.display = 'block'
+                });
+            });
+        }
+    }
+</script>

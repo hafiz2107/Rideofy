@@ -1,0 +1,43 @@
+<div id="wrap" class="container-fluid" style="padding-left: 285px;">
+    <div class="">
+        <h3>Order Management</h3>
+
+        <table cellpadding="0" cellspacing="0" border="0" id="orderManagemetn"
+            class="datatable table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th><strong>Sl. No</strong></th>
+                    <th><strong>Category</strong></th>
+                    <th><strong>AD Images</strong></th>
+                    <th><strong>Action</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each ads}}
+                <tr class="gradeX">
+                    <td>{{add @index '1'}}</td>
+                    <td>{{this.adForOfferCat}}</td>
+                    <td>
+                        <img src="/ads/{{this._id}}__1.jpg" alt="" style="height: 50px;">
+                    </td>
+                    <td>
+                        <a onclick="deleteAdSwal('{{this._id}}')" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+                {{/each}}
+        </table>
+    </div>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+
+<script>
+    $(document).ready(function () {
+        $('#orderManagemetn').DataTable();
+    });
+</script>

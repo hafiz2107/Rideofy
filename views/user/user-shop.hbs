@@ -1,0 +1,241 @@
+<section id="shopgrid" class="shop shop-grid">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-3 sidebar">
+
+                <div class="widget widget-categories">
+                    <div class="widget-title">
+                        <h5>categories</h5>
+                    </div>
+
+                    {{!-- Categories --}}
+                    <div class="widget-content">
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href="/shopcat"  style="cursor: pointer;"><i class="fa fa-angle-double-right"></i>All Products</a>
+                            </li>
+                            {{#each allCategories}}
+
+                            <li>
+                                <a href="/shopcat/?catName={{this.mainCategory}}" style="cursor: pointer;"><i
+                                        class="fa fa-angle-double-right"></i>{{this.mainCategory}}</a>
+                            </li>
+
+                            {{/each}}
+                        </ul>
+                    </div>
+                    {{!-- Categories Ends --}}
+                </div>
+
+
+
+
+                <div class="widget widget-filter">
+                    <div class="widget-title">
+                        <h5>Filter By Price</h5>
+                    </div>
+                    <div class="widget-content">
+                        <div id="slider-range"></div>
+                        <p>
+                            <label for="amount">Price: </label>
+                            <input type="text" id="amount" readonly>
+                        </p>
+                        <a class="btn btn-secondary"  onclick="filterApply()">filter</a>
+                    </div>
+                </div>
+
+
+                <div class="widget widget-categories">
+                    <div class="widget-title">
+                        <h5>Brands</h5>
+                    </div>
+
+                    {{!-- Categories --}}
+                    <div class="widget-content">
+                        <ul class="list-unstyled">
+
+                            {{#each allBikeBrands}}
+
+                            <li>
+                                <a href="/shopbrand/{{this.bikeBrand}}" style="cursor: pointer;"><i class="fa fa-angle-double-right"></i>{{this.bikeBrand}}</a>
+                            </li>
+
+                            {{/each}}
+                        </ul>
+                    </div>
+                    {{!-- Categories Ends --}}
+                </div>
+
+
+
+
+
+
+
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-9">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        {{!-- <div class="product-num pull-left pull-none-xs">
+                            <h3>Showing 1 : 16 of <span class="color-theme">245</span> product</h3>
+                        </div> --}}
+
+                        {{!-- <div class="product-options pull-right text-right pull-none-xs">
+                            <i class="fa fa-angle-down"></i>
+                            <select>
+                                <option selected="" value="Default">Default Sorting</option>
+                                <option value="Larger">Newest Items</option>
+                                <option value="Larger">oldest Items</option>
+                                <option value="Larger">Hot Items</option>
+                                <option value="Small">Highest Price</option>
+                                <option value="Medium">Lowest Price</option>
+                            </select>
+                        </div> --}}
+
+                    </div>
+
+                </div>
+
+
+                {{!-- All products Starts --}}
+                <div class="row">
+                    {{#if products}}
+                        
+                    
+                    {{#each products}}
+                    <div class="col-xs-12 col-sm-6 col-md-4 product">
+                        <div class="product-img">
+                            {{#lte this.productquantity '0'}}
+                            <img id="" src="/uploads/{{this._id}}__1.jpg" alt="Product" style="height: 430px;" />
+                            <img src="/images/Sold Out.png" alt=""
+                                style="display: inline; top: -440px; margin-bottom: -270px;">
+                            <input type="text" hidden class="product-id" value="{{this._id}}">
+                            {{else}}
+                            <img src="/uploads/{{this._id}}__1.jpg" alt="Product" />
+                            <input type="text" hidden class="product-id" value="{{this._id}}">
+                            {{/lte}}
+
+                            <div class="product-hover " style="cursor: pointer;">
+                                <div class="product-action">
+                                    {{!-- To hide and display the add to cart and buy now related to the quantity --}}
+                                    {{#gt this.productquantity '0'}}
+
+                                    <a id="" class="btn btn-primary payment">Buy Now</a>
+
+                                    {{else}}
+                                    <a id="" class="btn btn-primary payment" style="display: none;">Buy Now</a>
+                                    {{/gt}}
+
+                                    {{#gt this.productquantity '0'}}
+                                    {{#if ../logStatus}}
+                                    {{#hello ../items this._id this.productprice this.productname}}
+                                    {{/hello}}
+                                    {{else}}
+                                    <a href="/login" class="btn btn-primary add-to-cart">Add To Cart</a>
+                                    {{/if}}
+
+                                    {{/gt}}
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="product-bio">
+                            <div class="prodcut-cat">
+                                 <a href="/getproductsonprobrand/{{this.productbrand}}">{{this.productbrand}}</a>
+                            </div>
+
+                            <div class="prodcut-title">
+                                <h3>
+                                    <a href="/productview/{{this._id}}">{{this.productname}}</a>
+                                </h3>
+                            </div>
+
+                            <div class="product-price">
+                                <span class="symbole">₹ </span><span>{{this.productprice}}</span>
+                            </div>
+                            {{#if this.offer}}
+                            <span>MRP : ₹<s>{{this.productofferprice}}</s><span style="color: green;"> {{this.offer}} %
+                                    OFF</span></span>
+
+                            {{/if}}
+                        </div>
+
+                    </div>
+                    {{/each}}
+                    {{else}}
+                    <h1>Sorry No products</h1>
+                    {{/if}}
+                </div>
+
+
+
+
+
+                <script>
+                    window.onclick = (event) => {
+                        var payment = document.getElementsByClassName('payment')
+                        var addToCart = document.getElementsByClassName('add-to-cart')
+                        var hover = document.getElementsByClassName('product-hover')
+                        var product_id = document.getElementsByClassName('product-id')
+
+
+
+                        for (var i = 0; i < hover.length; i++) {
+
+                            if (event.target === payment[i]) {
+                                location.href = '/checkoutbuynow/' + product_id[i].value
+                                break;
+                            } else if (event.target === addToCart[i]) {
+                                break;
+                            }
+                            else if (event.target === hover[i]) {
+                                location.href = "/productview/" + product_id[i].value
+                                break;
+                            }
+                        }
+
+
+                    }
+                </script>
+
+                {{!-- <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <ul class="pagination">
+                            <li class="active">
+                                <a href="#">1</a>
+                            </li>
+                            <li>
+                                <a href="#">2</a>
+                            </li>
+                            <li>
+                                <a href="#">3</a>
+                            </li>
+                            <li>
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true"><i class="fa fa-angle-right"></i></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div> --}}
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<script>
+    function filterApply() {
+        var price = document.getElementById('amount').value
+        var price = price.split('-')
+        var minAmount = parseInt(price[0])
+        var maxAmount = parseInt(price[1])
+
+        location.href = '/shopprice/' + minAmount + '/' + maxAmount
+    }
+</script>

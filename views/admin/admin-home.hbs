@@ -1,0 +1,433 @@
+<div class="main-panel">
+  <!-- Navbar -->
+  <!-- End Navbar -->
+  <div class="content">
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+          <div class="card card-stats">
+            <div class="card-header card-header-primary card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">layers</i>
+              </div>
+              <p class="card-category">Total Orders Today</p>
+              <h3 class="card-title">{{placed}}</h3>
+            </div>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons">date_range</i> {{date}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {{!-- Total delivered --}}
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+          <div class="card card-stats">
+            <div class="card-header card-header-info card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">local_shipping</i>
+              </div>
+              <p class="card-category">Orders Delivered Today</p>
+              <h3 class="card-title">{{delivered}}</h3>
+            </div>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons">date_range</i> {{date}}
+              </div>
+            </div>
+          </div>
+        </div>
+        {{!-- Total delivered ends --}}
+
+        {{!-- Total cancelled --}}
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+          <div class="card card-stats">
+            <div class="card-header card-header-danger card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">close</i>
+              </div>
+              <p class="card-category">Orders cancelled Today</p>
+              <h3 class="card-title">{{totalCancel}}</h3>
+            </div>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons">date_range</i> {{date}}
+              </div>
+            </div>
+          </div>
+        </div>
+        {{!-- Total cancelled ends --}}
+
+        {{!-- Total COD --}}
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+          <div class="card card-stats">
+            <div class="card-header card-header-success card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">payments</i>
+              </div>
+              <p class="card-category">COD Orders Today</p>
+              <h3 class="card-title">{{totalcod}}</h3>
+            </div>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons">date_range</i> {{date}}
+              </div>
+            </div>
+          </div>
+        </div>
+        {{!-- Total COd ends --}}
+
+        {{!-- Total COD --}}
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+          <div class="card card-stats">
+            <div class="card-header card-header-primary card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">person</i>
+              </div>
+              <p class="card-category">Active users</p>
+              <h3 class="card-title">{{activeUsers}}</h3>
+            </div>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons">date_range</i> {{date}}
+              </div>
+            </div>
+          </div>
+        </div>
+        {{!-- Total COd ends --}}
+
+        {{!-- Total products --}}
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+          <div class="card card-stats">
+            <div class="card-header card-header-info card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">inventory_2</i>
+              </div>
+              <p class="card-category">Total Products</p>
+              <h3 class="card-title">{{totalProducts}}</h3>
+            </div>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons">date_range</i> {{date}}
+              </div>
+            </div>
+          </div>
+        </div>
+        {{!-- Total products En --}}
+
+        {{!--Low on stock --}}
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+          <div class="card card-stats">
+            <div class="card-header card-header-danger card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">production_quantity_limits</i>
+              </div>
+              <p class="card-category">Low On stock</p>
+              <h3 class="card-title">{{itemsLowOnStock}}</h3>
+            </div>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons">date_range</i> {{date}}
+              </div>
+            </div>
+          </div>
+        </div>
+        {{!--Stock ends --}}
+
+        {{!-- Offer --}}
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+          <div class="card card-stats">
+            <div class="card-header card-header-success  card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">local_offer</i>
+              </div>
+              <p class="card-category">Products On offer</p>
+              <h3 class="card-title">{{productsOnOffer}}</h3>
+            </div>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons">date_range</i> {{date}}
+              </div>
+            </div>
+          </div>
+        </div>
+        {{!-- Offer Ends --}}
+
+
+        {{!-- Stock over --}}
+
+        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+          <div class="card card-stats">
+            <div class="card-header card-header-danger card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">close</i>
+              </div>
+              <p class="card-category">Stock Out Products</p>
+              <table class="table table-hover" style="color: black;">
+                <tbody>
+                  {{#if stockOverProducts}}
+                  {{#each stockOverProducts}}
+                  <tr>
+                    <td class="text-warning"> <a href="/admin/edit-product/{{this._id}}" data-toggle="tooltip" data-placement="top"
+                        title="Add Stock">{{this.productname}}</a> </td>
+                  </tr>
+                  {{/each}}
+                    {{else}}
+                    <h3 style="color: black;float: right;"> Currently no products are Out of stock</h3>
+                  {{/if}}
+                 
+                  
+                </tbody>
+              </table>
+            </div>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons">date_range</i> {{date}}
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        
+        {{!-- Stock Over Ends --}}
+
+        <div class="col-xl-4 col-lg-12">
+          <div class="card card-chart">
+            <div class="card-header card-header-light">
+              <div class="ct-chart" id="">
+                <canvas id="deliveredOrdersbar"></canvas>
+              </div>
+            </div>
+            <div class="card-body">
+              <h4 class="card-title">Total Orders Delivered Today</h4>
+            </div>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons">access_time</i> {{date}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-xl-4 col-lg-12">
+          <div class="card card-chart">
+            <div class="card-header card-header-light">
+              <div class="ct-chart" id="">
+                <canvas id="placedOrdersbar"></canvas>
+              </div>
+            </div>
+            <div class="card-body">
+              <h4 class="card-title">Total Orders Placed Today</h4>
+            </div>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons">access_time</i> {{date}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="row">
+        <div class="col-xl-12 col-lg-12">
+          <canvas id="line"></canvas>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xl-12 col-lg-12">
+          <canvas id="bar"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('line');
+  const myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Total Orders', 'Pending Orders', 'Placed Orders', 'Shipped Orders', 'Delivered Orders', 'Cancelled Orders'],
+      datasets: [{
+        label: false,
+        data: [{{ orders }}],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderWidth: 1
+    }]
+  },
+    options: {
+    plugins: {
+      title: {
+        display: true,
+        text: 'Order Summary'
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+    })
+
+</script>
+<script>
+  const ctx2 = document.getElementById('deliveredOrdersbar');
+  order1 = [{{ orders }}]
+
+  const myChart2 = new Chart(ctx2, {
+    type: 'bar',
+    data: {
+      labels: ['Total Orders', 'Delivered Orders'],
+      datasets: [{
+        label: false,
+        data: [order1[0], order1[5]],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      plugins: {
+        title: {
+          display: true,
+          text: 'Order Summary'
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  })
+</script>
+
+
+<script>
+  const ctx3 = document.getElementById('placedOrdersbar');
+  order2 = [{{ orders }}]
+
+  const myChart3 = new Chart(ctx3, {
+    type: 'bar',
+    data: {
+      labels: ['Total Orders', 'Placed Orders'],
+      datasets: [{
+        label: false,
+        data: [order1[0], order1[2]],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  })
+
+</script>
+
+<script>
+  const ctxBar = document.getElementById('bar');
+  const barChart = new Chart(ctxBar, {
+    type: 'bar',
+    data: {
+      labels: ['Pending Orders', 'Placed Orders', 'Shipped Orders', 'Delivered Orders', 'Cancelled Orders'],
+      datasets: [{
+        label: false,
+        data: [{{ orders }}],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderWidth: 3
+    }]
+  },
+    options: {
+    plugins: {
+      title: {
+        display: true,
+        text: 'Order Summary'
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+    });
+
+</script>
+
+<script>
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>

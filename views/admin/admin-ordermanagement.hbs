@@ -1,0 +1,58 @@
+<div id="wrap" class="container-fluid" style="padding-left: 285px;">
+	<div class="">
+		<h3>Order Management</h3>
+
+		<table cellpadding="0" cellspacing="0" border="0" id="orderManagemetn" class="datatable table table-striped table-bordered">
+			<thead>
+				<tr>
+					<th><strong>Sl. No</strong></th>
+					<th><strong>Order Date</strong></th>
+					<th><strong>Order ID</strong></th>
+					<th><strong> User ID</strong></th>
+					<th> <strong>Delvery Location</strong> </th>
+					<th> <strong>Payement method</strong></th>
+					<th> <strong>Order Total</strong></th>
+					<th> <strong>Order Status</strong></th>
+					
+				</tr>
+			</thead>
+			<tbody>
+				{{#each orders}}
+
+
+				<tr class="gradeX">
+					<td>{{add @index '1'}}</td>
+					<td>{{this.orderDate}}</td>
+					<td>{{this._id}}</td>
+					<td>{{this.userId}}</td>
+					<td>{{this.delivery.city}},{{this.delivery.pincode}}</td>
+					<td>{{this.payment_method}}</td>
+					<td>{{this.totalAmount}}</td>
+
+
+					{{#eq this.mode 'cartorder'}}
+						<td><a href="/admin/viewoderlist/{{this._id}}/{{this.userId}}" class="btn btn-success">View
+								Order</a></td>
+					{{else}}
+						<td><a href="/admin/viewoderlistofBuyNow/{{this._id}}/{{this.userId}}" class="btn btn-success">View
+								Order</a></td>
+					{{/eq}}
+
+					
+				</tr>
+
+				{{/each}}
+		</table>
+	</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+	crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+
+<script>
+	$(document).ready(function () {
+		$('#orderManagemetn').DataTable();
+	});
+</script>

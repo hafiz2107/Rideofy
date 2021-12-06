@@ -1,0 +1,133 @@
+<div id="wrap" class="container-fluid main-panel mt-5">
+	<div class="">
+		
+		<div class="col-md-12">
+			<div class="card">
+				<div class="card-header card-header-primary">
+					<h4 class="card-title ">Product Management</h4>
+					<p class="card-category">View Or Edit Products</p>
+				</div>
+				
+				<div class="card-body">
+					<a href="/admin/add-product" class="btn btn-success mb-3" >Add product</a>
+					<div class="table-responsive">
+						<table cellpadding="0" cellspacing="0" border="0"
+							class="datatable table table-striped table-bordered" id="myTable">
+							<thead>
+								<tr>
+									<th><strong>Sl. No</strong></th>
+									<th><strong>Product Name</strong></th>
+									<th><strong> Category</strong></th>
+									<th><strong> Sub Category</strong></th>
+									<th> <strong>Product Brand</strong> </th>
+									<th> <strong>Suitable Bike brand</strong></th>
+									<th><strong>Suitable Bike model</strong> </th>
+									<th><strong>Price</strong></th>
+									<th><strong>Quantity</strong></th>
+									<th><strong>Added Date</strong></th>
+									<th><strong>Description</strong></th>
+									<th> <strong>Image</strong></th>
+									<th><strong>Action</strong> </th>
+
+								</tr>
+							</thead>
+							<tbody>
+								{{#each products}}
+								<tr class="gradeX">
+									<td>{{add @index '1'}}</td>
+									<td>{{this.productname}}</td>
+									<td>{{this.productcategory}}</td>
+									<td>{{this.productsubcategory}}</td>
+									<td>{{this.productbrand}}</td>
+									<td>{{this.suitablebikebrand}}</td>
+									<td>{{this.suitablebikemodel}}</td>
+									<td>{{this.productprice}}</td>
+									<td>{{this.productquantity}}</td>
+									<td>{{this.productdate}}</td>
+
+									<td class="comment more">
+										<div class="">{{this.productdes}}</div>
+									</td>
+
+									<td><img src="/uploads/{{this._id}}__1.jpg" alt="" style="height: 50px;"></td>
+									<td class="center">
+										<a href="/admin/edit-product/{{this._id}}" class="btn btn-success"><i
+												class="bi bi-pencil"></i></a>
+										<button type="button" class="btn btn-danger"
+											onclick="deleteswal('{{this._id}}')"><i class="bi bi-trash"></i></button>
+									</td>
+								</tr>
+								{{/each}}
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+	crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+
+<script>
+	$(document).ready(function () {
+		$('#myTable').DataTable();
+	});
+
+	$(document).ready(function () {
+		var showChar = 50;
+		var ellipsestext = "...";
+		var moretext = "more";
+		var lesstext = "less";
+		$('.more').each(function () {
+			var content = $(this).html();
+
+			if (content.length > showChar) {
+
+				var c = content.substr(0, showChar);
+				var h = content.substr(showChar - 1, content.length - showChar);
+
+				var html = c + '<span class="moreelipses">' + ellipsestext + '</span>&nbsp;<span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink " style="">' + moretext + '<i class="bi bi-chevron-compact-down ml-2"></i></a></span>';
+
+				$(this).html(html);
+			}
+
+		});
+
+		$(".morelink").click(function () {
+			if ($(this).hasClass("less")) {
+				$(this).removeClass("less");
+				$(this).html(moretext);
+			} else {
+				$(this).addClass("less");
+				$(this).html(lesstext + '<i class="bi bi-chevron-compact-up"></i>');
+			}
+			$(this).parent().prev().toggle();
+			$(this).prev().toggle();
+			return false;
+		});
+	});
+
+</script>
+<style>
+	.comment {
+		background-color: transparent;
+		margin: 10px;
+	}
+
+	a.morelink {
+		text-decoration: none;
+		outline: none;
+		color: blue;
+		font-weight: 600;
+	}
+
+	.morecontent span {
+		display: none;
+
+	}
+</style>

@@ -1,0 +1,404 @@
+<section id="page-title" class="page-title">
+    <div class="my-account-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="personal-information">
+                        <h4 class="my-account-title">Add Address</h4>
+                        <div class="personal-information-box">
+
+                            <form action="/editaddress" method="POST" id="editAddress">
+                                <div class="row">
+                                    <div class="col-md-6 col-xs-12">
+                                        <input type="hidden" name="addressId" value="{{address._id}}" id="">
+                                        <div class="pib-item">
+                                            <label>First Name</label>
+                                            <input type="text" value="{{address.firstname}}" name="firstname" placeholder="Enter your first name...">
+                                        </div>
+
+
+                                        <div class="pib-item">
+                                            <label>Company/House Name</label>
+                                            <input type="text" value="{{address.address1}}" name="address1" placeholder="Enter your address...">
+                                        </div>
+
+                                        <div class="pib-item">
+                                            <label>Country</label>
+                                            <select id="country" value="{{address.country}}" name="country">
+                                                <option>select country</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="pib-item pib-item-state-zip">
+                                            <div class="row">
+                                                <div class="col-md-6 col-xs-12">
+
+                                                    <label for="state">State</label>
+                                                    <span id="state-code">
+                                                        <select name="state" id="state">
+                                                            {{!-- States --}}
+                                                        </select>
+                                                    </span>
+
+                                                </div>
+                                                <div class="col-md-6 col-xs-12">
+                                                    <label>Zip Code</label>
+                                                    <input type="text" value="{{address.pincode}}" name="pincode"
+                                                        placeholder="Enter your Zip code...">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-xs-12">
+
+
+
+                                        <div class="pib-item">
+                                            <label>Last Name</label>
+                                            <input type="text" value="{{address.lastname}}" name="lastname" placeholder="Enter your last name...">
+                                        </div>
+
+                                        <div class="pib-item">
+                                            <label>Phone Number</label>
+                                            <input type="text" value="{{address.phone}}" name="phone" placeholder="Enter your phone number...">
+                                        </div>
+
+                                        <div class="pib-item">
+                                            <label>Address 2</label>
+                                            <input type="text" value="{{address.address2}}" name="address2"
+                                                placeholder="Enter the apartment. floor, suite, etc...">
+                                        </div>
+
+
+                                        <div class="pib-item pib-item-date">
+                                            <label>Secondary Phone</label>
+                                            <input type="text" value="{{address.second_mobile}}" name="second_mobile"
+                                                placeholder="Enter your phone number...">
+                                        </div>
+                                    </div>
+
+                                    <center>
+                                        <div class="pib-item">
+                                            {{#eq address.addresstype 'Home'}}
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="addresstype" value="Home" id="flexRadioDefault1"
+                                                        style="display: inline;" checked>
+                                                    <label class="form-check-label" for="flexRadioDefault1" style="display: inline;">Home</label>
+                                                    <input class="form-check-input" type="radio" name="addresstype" value="Work" id="flexRadioDefault2"
+                                                        style="display: inline; margin-left: 10px;">
+                                                    <label class="form-check-label" for="flexRadioDefault2" style="display: inline;">Work</label>
+                                                </div>
+                                                {{else}}
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="addresstype" value="Home" id="flexRadioDefault1"
+                                                        style="display: inline;">
+                                                    <label class="form-check-label" for="flexRadioDefault1" style="display: inline;">Home</label>
+                                                    <input class="form-check-input" type="radio" name="addresstype" value="Work" id="flexRadioDefault2"
+                                                        style="display: inline; margin-left: 10px;" checked>
+                                                    <label class="form-check-label" for="flexRadioDefault2" style="display: inline;">Work</label>
+                                                </div>
+                                            {{/eq}}
+                                            
+
+                                        </div>
+                                    </center>
+
+                                    <div class="col-xs-12">
+                                        <div class="pib-save-change">
+                                            <button type="submit">Edit address</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.js"></script>
+<script>
+
+    $.validator.addMethod("alpha", function (value, element) {
+        return this.optional(element) || value == value.match(/^[a-zA-Z\s]+$/);
+    });
+
+    $(document).ready(function(){
+        $('#editAddress').validate({
+            rules:{
+                firstname : {
+                    alpha  :true,
+                    required : true,
+                },
+                address1 :{
+                    required : true,
+                },
+                city : {
+                    required :true,
+                },
+                country :{
+                    required : true,
+                },
+                state  :{
+                    required : true,
+                },
+                pincode :{
+                    required : true,
+                    digits  :true,
+                    maxlength : 6,
+                    minlength : 6,
+                },
+                lastname : {
+                    alpha : true,
+                    required : true
+                },
+                phone : {
+                    required : true,
+                    maxlength :10,
+                    minlength :10,
+                    digits : true,
+                },
+                address2  :{
+                    required : true
+                },
+                second_mobile : {
+                    digits : true,
+                    minlength : 10,
+                    maxlength : 10,
+                },
+            },
+            messages :{
+                firstname :{
+                     alpha: "Please Enter alphabets only",
+                },
+                lastname :{
+                     alpha: "Please Enter alphabets only",
+                }
+            }
+        })
+    })
+</script>
+
+<script>
+    // user country code for selected option
+    let user_country_code = "IN";
+
+    (function () {
+        // scripthttps://www.html-code-generator.com/html/drop-down/country-region
+
+        // Get the country name and state name from the imported script.
+        let country_list = country_and_states['country'];
+        let states_list = country_and_states['states'];
+
+        // creating country name drop-down
+        let option = '';
+        option += '<option>select country</option>';
+        for (let country_code in country_list) {
+            // set selected option user country
+            let selected = (country_code == user_country_code) ? ' selected' : '';
+            option += '<option value="' + country_code + '"' + selected + '>' + country_list[country_code] + '</option>';
+        }
+        document.getElementById('country').innerHTML = option;
+
+        // creating states name drop-down
+        let text_box = '<input type="text" name="state" class="input-text" id="state">';
+        let state_code_id = document.getElementById("state-code");
+
+        function create_states_dropdown() {
+            // get selected country code
+            let country_code = document.getElementById("country").value;
+            let states = states_list[country_code];
+            // invalid country code or no states add textbox
+            if (!states) {
+                state_code_id.innerHTML = text_box;
+                return;
+            }
+            let option = '';
+            if (states.length > 0) {
+                option = '<select name="state" id="state">\n';
+                for (let i = 0; i < states.length; i++) {
+                    option += '<option value="' + states[i].code + '">' + states[i].name + '</option>';
+                }
+                option += '</select>';
+            } else {
+                // create input textbox if no states 
+                option = text_box
+            }
+            state_code_id.innerHTML = option;
+        }
+
+        // country select change event
+        const country_select = document.getElementById("country");
+        country_select.addEventListener('change', create_states_dropdown);
+
+        create_states_dropdown();
+    })();
+</script>
+
+<style>
+    .error{
+        color: red !important;
+    }
+
+    input{
+        color: black !important;
+        font-weight: 500 !important;
+    }
+</style>
+
+
+<style>
+    input[type="file"] {
+        display: none;
+    }
+
+    #edit_img {
+        margin-left: 0px;
+        color: white;
+        font-size: large;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+
+    /* relevant styles */
+    .img__wrap {
+        position: relative;
+        height: 180px;
+        width: 150px;
+        border-radius: 100px;
+    }
+
+    .img__description {
+        position: absolute;
+        top: 0px;
+        bottom: 25px;
+        left: -1px;
+        right: 0;
+        justify-content: center;
+        width: 114px;
+        background: #000000b8;
+        border-radius: 0;
+        color: #fff;
+        visibility: hidden;
+        opacity: 0;
+
+        /* transition effect. not necessary */
+        transition: opacity .2s, visibility .2s;
+    }
+
+    .img__wrap:hover .img__description {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .my-account-area {
+        padding: 54px 0 120px;
+    }
+
+    .my-account-title {
+        color: #555555;
+        font-size: 18px;
+        letter-spacing: 0;
+        margin: 0 0 23px;
+        position: relative;
+        text-transform: uppercase;
+    }
+
+    .my-account-title::after {
+        background: #ed1d7f none repeat scroll 0 0;
+        bottom: -22px;
+        content: "";
+        height: 3px;
+        left: 0;
+        position: absolute;
+        width: 30px;
+        z-index: 2;
+    }
+
+    .my-account-welcome {}
+
+    .my-account-welcome ul {
+        list-style: outside none none;
+        padding: 0;
+    }
+
+    .my-account-welcome ul li {}
+
+    .my-account-welcome ul li a {
+        color: #555555;
+        font-size: 15px;
+        font-weight: 300;
+        letter-spacing: 0;
+        line-height: 72px;
+    }
+
+    .personal-information {}
+
+    .personal-information-box {
+        margin: 51px 0 0;
+    }
+
+    .pib-item {
+        margin: 0 0 28px;
+    }
+
+    .pib-item label {
+        color: #555555;
+        display: block;
+        font-size: 15px;
+        font-weight: 300;
+        letter-spacing: 0;
+        line-height: 17px;
+        margin: 0 0 17px;
+        text-transform: capitalize;
+    }
+
+    .pib-item input[type="text"],
+    .pib-item select {
+        border: 1px solid #dddddd;
+        color: #b7b7b7;
+        font-size: 14px;
+        font-weight: 300;
+        height: 50px;
+        letter-spacing: 0;
+        padding: 0 10px;
+        width: 100%;
+    }
+
+    .pib-item.pib-item-date select {
+        display: inline-block;
+        margin-left: 3.3%;
+        width: 30%;
+    }
+
+    .pib-item.pib-item-date select.bd-month {
+        margin-left: 0;
+    }
+
+    .pib-item.pib-item-date select.bd-date {}
+
+    .pib-item.pib-item-date select.bd-year {}
+
+    .pib-save-change {
+        margin: 32px 0 0;
+        text-align: right;
+    }
+
+    .pib-save-change button {
+        background: #ed1d1d none repeat scroll 0 0;
+        border: 0 none;
+        border-radius: 3px;
+        color: #fff;
+        display: inline-block;
+        font-size: 14px;
+        letter-spacing: 0;
+        padding: 5px 30px;
+        text-transform: uppercase;
+    }
+</style>
